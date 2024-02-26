@@ -7,7 +7,7 @@ import java.util.*;
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in);
     private static ArrayList<String> orderIDs = new ArrayList<>();
-    private static HashMap<String, Integer> ongkir = new HashMap<>();
+    private static HashMap<String, String> ongkir = new HashMap<>();
 
     public static void showMenu(){
         System.out.println(">>=======================================<<");
@@ -46,8 +46,9 @@ public class OrderGenerator {
     
 
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
+        String namaRes = namaRestoran.substring(0,4);
         String output = "";
-        output+= namaRestoran.toUpperCase();
+        output+= namaRes.toUpperCase();
 
         String [] tanggalSplit = tanggalOrder.split("/");
         for(String tggl : tanggalSplit){
@@ -86,8 +87,18 @@ public class OrderGenerator {
     }
 
     public static String generateBill(String OrderID, String lokasi){
-        int biayaOngkosKirim = ongkir.get(lokasi);
+        ongkir.put("P", "10.000");
+        ongkir.put("U", "20.000");
+        ongkir.put("T", "35.000");
+        ongkir.put("S", "40.000");
+        ongkir.put("B", "60.000");
+        String biayaOngkosKirim = ongkir.get(lokasi.toUpperCase());
         String tanggalOrder = "";
+        String lokasiPrint = lokasi.toUpperCase();
+
+        if (biayaOngkosKirim == null) {
+            return "Lokasi pengiriman tidak valid.";
+        }
         for(int s = 4; s<12;s++){
             if(s==5 || s==7){
                 tanggalOrder+=OrderID.charAt(s) + "/";
@@ -96,23 +107,17 @@ public class OrderGenerator {
                 tanggalOrder+=OrderID.charAt(s);
             }
         }
-        String bill = "\nBill:\n" +
+        String bill = "Bill:\n" +
                     "Order ID: " + OrderID + "\n" +
                     "Tanggal Pemesanan: " + tanggalOrder + "\n" +
-                    "Lokasi Pengiriman: " + lokasi + "\n" +
-                    "Biaya Ongkos Kirim: " + biayaOngkosKirim;
+                    "Lokasi Pengiriman: " + lokasiPrint + "\n" +
+                    "Biaya Ongkos Kirim: Rp " + biayaOngkosKirim +"\n";
 
         return bill;
     }
 
     public static void main(String[] args) {
         Boolean exitMenu = true;
-
-        ongkir.put("P", 10000);
-        ongkir.put("U", 20000);
-        ongkir.put("T", 35000);
-        ongkir.put("S", 40000);
-        ongkir.put("B", 60000);
 
         while (exitMenu) {
             showMenu();
