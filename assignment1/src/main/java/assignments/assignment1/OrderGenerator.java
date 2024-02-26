@@ -1,15 +1,15 @@
-package assignments.assignment1;
+package assignments.assignment1;  //File termasuk ke package assignment
 
-import java.time.LocalDate;
+import java.time.LocalDate; //import built in library untuk input tanggal
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class OrderGenerator {
-    private static final Scanner input = new Scanner(System.in);
-    private static ArrayList<String> orderIDs = new ArrayList<>();
-    private static HashMap<String, String> ongkir = new HashMap<>();
+    private static final Scanner input = new Scanner(System.in); //Untuk input data
+    private static ArrayList<String> orderIDs = new ArrayList<>(); //Array list of order ID
+    private static HashMap<String, String> ongkir = new HashMap<>(); //Hash Map untuk lokasi dan biaya pengirimannya
 
-    public static void showMenu(){
+    public static void showMenu(){  //function show menu
         System.out.println(">>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
         System.err.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
@@ -24,7 +24,7 @@ public class OrderGenerator {
         System.out.println("3. Keluar");
     }
 
-    public static int convertCharToValue(char c) {
+    public static int convertCTV(char c) {  //Function untuk mengubah character menjadi suatu value
         if (c >= '0' && c <= '9') {
             return c - '0';
         } else if (c >= 'A' && c <= 'Z') {
@@ -34,7 +34,7 @@ public class OrderGenerator {
         }
     }
 
-    public static char convertValueToChar(int value) {
+    public static char convertVTC(int value) { //Function untuk mengembalikan character berdasarkan value yang dipunya
         if (value >= 0 && value <= 9) {
             return (char) (value + '0');
         } else if (value >= 10 && value <= 35) {
@@ -45,19 +45,19 @@ public class OrderGenerator {
     }
     
 
-    public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
-        String namaRes = namaRestoran.substring(0,4);
+    public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) { //Function untuk generate order ID
+        String namaRes = namaRestoran.substring(0,4); //Mengambil 4 karakter pertama dari input dan 
         String output = "";
-        output+= namaRes.toUpperCase();
+        output+= namaRes.toUpperCase(); //Mengubah menjadi kapital
 
         String [] tanggalSplit = tanggalOrder.split("/");
         for(String tggl : tanggalSplit){
-            output += tggl;
+            output += tggl; //Mengekstaksi input tanggal
         }
         
         int totalDigitNoTelp = 0;
         for(int k = 0; k<noTelepon.length();k++){
-            totalDigitNoTelp += Character.getNumericValue(noTelepon.charAt(k));
+            totalDigitNoTelp += Character.getNumericValue(noTelepon.charAt(k)); //Menjumlahkan seluruh digit nomor telepon
         }
         int digitNoTelp = totalDigitNoTelp%100;
         output += String.valueOf(digitNoTelp);
@@ -66,18 +66,18 @@ public class OrderGenerator {
         int totalCheckSum2 = 0;
         for(int l = 0; l<output.length();l++){
             if(l%2==0){
-                totalCheckSum1 += convertCharToValue(output.charAt(l));
+                totalCheckSum1 += convertCTV(output.charAt(l)); //Membuat checksum index genap
             }
             else{
-                totalCheckSum2 += convertCharToValue(output.charAt(l));
+                totalCheckSum2 += convertCTV(output.charAt(l)); //Membuat checksum index ganjil
             }
         }
 
         int checkSum1 = totalCheckSum1%36;
         int checkSum2 = totalCheckSum2%36;
 
-        char check1 = convertValueToChar(checkSum1);
-        char check2 = convertValueToChar(checkSum2);
+        char check1 = convertVTC(checkSum1);
+        char check2 = convertVTC(checkSum2);
 
         output += check1;
         output+= check2;
@@ -87,12 +87,13 @@ public class OrderGenerator {
     }
 
     public static String generateBill(String OrderID, String lokasi){
-        ongkir.put("P", "10.000");
+        ongkir.put("P", "10.000"); //Memasukkan value pada hashmap
         ongkir.put("U", "20.000");
         ongkir.put("T", "35.000");
         ongkir.put("S", "40.000");
         ongkir.put("B", "60.000");
-        String biayaOngkosKirim = ongkir.get(lokasi.toUpperCase());
+
+        String biayaOngkosKirim = ongkir.get(lokasi.toUpperCase()); //mendapatkan harga pengiriman berdasarkan key hashmap
         String tanggalOrder = "";
         String lokasiPrint = lokasi.toUpperCase();
 
@@ -101,13 +102,13 @@ public class OrderGenerator {
         }
         for(int s = 4; s<12;s++){
             if(s==5 || s==7){
-                tanggalOrder+=OrderID.charAt(s) + "/";
+                tanggalOrder+=OrderID.charAt(s) + "/"; //Membuat output untuk tanggal order
             }
             else {
                 tanggalOrder+=OrderID.charAt(s);
             }
         }
-        String bill = "Bill:\n" +
+        String bill = "Bill:\n" + //Membuat output
                     "Order ID: " + OrderID + "\n" +
                     "Tanggal Pemesanan: " + tanggalOrder + "\n" +
                     "Lokasi Pengiriman: " + lokasiPrint + "\n" +
@@ -121,40 +122,32 @@ public class OrderGenerator {
 
         while (exitMenu) {
             showMenu();
-            System.out.printf("Pilihan Menu: ");   
+            System.out.printf("Pilihan Menu: ");  //Melakukan input pilihan menu
             int pilihMenu = input.nextInt();
             input.nextLine();
+            Boolean rturn = false;
 
             if(pilihMenu==1){
                 System.out.printf("Nama Restoran: ");
-                String tempNamaRestoran = input.nextLine().trim();
+                String tempNamaRestoran = input.nextLine().trim(); //Menghilangkan spasi di bagian depan/belakang
 
-                if(tempNamaRestoran.length()<4){
+                if(tempNamaRestoran.length()<4){ //Melakukan validasi input
                     System.out.printf("Masukkan nama dengan panjang lebih dari 3 karakter\n\n");
                     continue;
                 }
                 String namaRestoran = tempNamaRestoran.substring(0, 4);
-                if(namaRestoran.length()==4){
-                    for(int j=0; j<namaRestoran.length();j++){
-                        if(!Character.isAlphabetic(namaRestoran.charAt(j))){
-                            System.out.printf("Masukkan nama dengan panjang lebih dari 2 karakter\n\n");
-                            break;
-                        }
-                    }
-                }
 
-
-                System.out.printf("Tanggal Pemesanan: ");
+                System.out.printf("Tanggal Pemesanan: "); //Melakukan input tanggal pemesanan
                 String tanggalOrder = input.nextLine();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 try {
                     LocalDate tanggal = LocalDate.parse(tanggalOrder, formatter);
                 } catch (Exception e) {
-                    System.out.printf("Format tanggal tidak valid. Masukkan tanggal dalam format DD/MM/YYYY.\n\n");
+                    System.out.printf("Format tanggal tidak valid. Masukkan tanggal dalam format DD/MM/YYYY.\n\n"); //Validasi input
                     continue;
                 }
 
-                System.out.printf("No. Telpon: ");
+                System.out.printf("No. Telpon: "); //Melakukan input nomor telepon 
                 String tempNomorTelepon = input.nextLine();
                 String noTelepon = "";
                 for(int i=0; i<tempNomorTelepon.length();i++){
@@ -162,21 +155,25 @@ public class OrderGenerator {
                         noTelepon+=tempNomorTelepon.charAt(i);
                     }
                     else{
-                        System.out.printf("Harap masukkan nomor telepon dalam bentuk bilangan bulat positif.\n\n");
+                        System.out.printf("Harap masukkan nomor telepon dalam bentuk bilangan bulat positif.\n\n"); //Validasi input untuk nomor telepon
+                        rturn = true;
                         break;
                     }
                 }
+                if(rturn){
+                    continue;
+                }
 
-                System.out.println("Order ID " + generateOrderID(namaRestoran, tanggalOrder,noTelepon) + " diterima!");
+                System.out.println("Order ID " + generateOrderID(namaRestoran, tanggalOrder,noTelepon) + " diterima!"); //Output apabila ketentuan input semua nya terpenuhi
 
             }
             else if(pilihMenu==2){
                 System.out.printf("Order ID: ");
                 String orderID = input.nextLine();
-                if(orderIDs.contains(orderID)){
+                if(orderIDs.contains(orderID)){ //Melakukan validasi apakah input sudah ada di array list order ID atau belum
                     System.out.printf("Lokasi Pengiriman: ");
                     String lokasi = input.nextLine().toUpperCase();
-                    if(ongkir.containsKey(lokasi)){
+                    if(ongkir.containsKey(lokasi)){ //Melakukan pengecekan untuk lokasi  
                         System.out.println(generateBill(orderID, lokasi));
                     }
                     while(!ongkir.containsKey(lokasi)){
@@ -186,6 +183,7 @@ public class OrderGenerator {
                     }
 
                 }
+                //Validasi input untuk order ID
                 while(orderID.length()!=16){
                     System.out.println("Order ID minimal 16 karakter");
                     System.out.printf("Order ID: ");
@@ -199,7 +197,7 @@ public class OrderGenerator {
                 }
             }
 
-            else if(pilihMenu==3){
+            else if(pilihMenu==3){ //Exit apabila memasukkan input 3
                 System.out.printf("Terima kasih telah menggunakan DepeFood!");
                 exitMenu=false;
             }
