@@ -22,6 +22,7 @@ public class OrderGenerator {
         System.err.println("1. Generate Order ID");
         System.out.println("2. Generate Bill");
         System.out.println("3. Keluar");
+        System.out.println("--------------------------------------------");
     }
 
     public static int convertCTV(char c) {  //Function untuk mengubah character menjadi suatu value
@@ -98,7 +99,7 @@ public class OrderGenerator {
         String lokasiPrint = lokasi.toUpperCase();
 
         if (biayaOngkosKirim == null) {
-            return "Lokasi pengiriman tidak valid.";
+            return "Harap masukkan lokasi pengiriman yang ada pada jangkauan!";
         }
         for(int s = 4; s<12;s++){
             if(s==5 || s==7){
