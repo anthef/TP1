@@ -61,7 +61,13 @@ public class OrderGenerator {
             totalDigitNoTelp += Character.getNumericValue(noTelepon.charAt(k)); //Menjumlahkan seluruh digit nomor telepon
         }
         int digitNoTelp = totalDigitNoTelp%100;
-        output += String.valueOf(digitNoTelp);
+        if(digitNoTelp<10){
+            output += "0"+String.valueOf(digitNoTelp);
+        }
+        else{
+            output += String.valueOf(digitNoTelp);
+        }
+        
 
         int totalCheckSum1 = 0;
         int totalCheckSum2 = 0;
