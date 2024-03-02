@@ -18,6 +18,9 @@ public class OrderGenerator {
         System.out.println("||          |_|                          ||");
         System.out.println(">>=======================================<<");
         System.out.println();
+    }
+
+    public static void repMenu(){
         System.out.println("Pilih menu:");
         System.out.println("1. Generate Order ID");
         System.out.println("2. Generate Bill");
@@ -100,12 +103,12 @@ public class OrderGenerator {
         ongkir.put("S", "40.000");
         ongkir.put("B", "60.000");
 
-        String biayaOngkosKirim = ongkir.get(lokasi.toUpperCase()); //mendapatkan harga pengiriman berdasarkan key hashmap
-        String tanggalOrder = "";
         String lokasiPrint = lokasi.toUpperCase();
+        String biayaOngkosKirim = ongkir.get(lokasiPrint); //mendapatkan harga pengiriman berdasarkan key hashmap
+        String tanggalOrder = "";
 
         if (biayaOngkosKirim == null) {
-            return "Harap masukkan lokasi pengiriman yang ada pada jangkauan!";
+            return "Harap masukkan lokasi pengiriman yang ada pada jangkauan!\n";
         }
         for(int s = 4; s<12;s++){
             if(s==5 || s==7){
@@ -126,9 +129,9 @@ public class OrderGenerator {
 
     public static void main(String[] args) {
         Boolean exitMenu = true;
-
+        showMenu();
         while (exitMenu) {
-            showMenu();
+            repMenu();
             System.out.printf("Pilihan Menu: ");  //Melakukan input pilihan menu
             int pilihMenu = input.nextInt();
             input.nextLine();
@@ -139,7 +142,7 @@ public class OrderGenerator {
                 String tempNamaRestoran = input.nextLine().trim(); //Menghilangkan spasi di bagian depan/belakang
 
                 if(tempNamaRestoran.length()<4){ //Melakukan validasi input
-                    System.out.printf("Masukkan nama dengan panjang lebih dari 3 karakter\n\n");
+                    System.out.printf("Nama Restoran tidak valid!\n\n");
                     continue;
                 }
                 String namaRestoran = tempNamaRestoran.substring(0, 4);
@@ -150,7 +153,7 @@ public class OrderGenerator {
                 try {
                     LocalDate tanggal = LocalDate.parse(tanggalOrder, formatter);
                 } catch (Exception e) {
-                    System.out.printf("Format tanggal tidak valid. Masukkan tanggal dalam format DD/MM/YYYY.\n\n"); //Validasi input
+                    System.out.printf("Tanggal Pemesanan dalam format DD/MM/YYYY!\n\n"); //Validasi input
                     continue;
                 }
 
@@ -172,35 +175,41 @@ public class OrderGenerator {
                 }
 
                 System.out.println("Order ID " + generateOrderID(namaRestoran, tanggalOrder,noTelepon) + " diterima!"); //Output apabila ketentuan input semua nya terpenuhi
+                System.out.println("--------------------------------------------");
 
             }
             else if(pilihMenu==2){
+                String lokasi = "";
                 System.out.printf("Order ID: ");
                 String orderID = input.nextLine();
-                if(orderIDs.contains(orderID)){ //Melakukan validasi apakah input sudah ada di array list order ID atau belum
-                    System.out.printf("Lokasi Pengiriman: ");
-                    String lokasi = input.nextLine().toUpperCase();
-                    if(ongkir.containsKey(lokasi)){ //Melakukan pengecekan untuk lokasi  
-                        System.out.println(generateBill(orderID, lokasi));
-                    }
-                    while(!ongkir.containsKey(lokasi)){
-                        System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!");
-                        System.out.printf("Lokasi Pengiriman: ");
-                        lokasi = input.nextLine().toUpperCase();
-                    }
-
+                 //Validasi input untuk order ID
+                while(!orderIDs.contains(orderID)&orderID.length()==16){
+                    System.out.println("Silahkan masukkan Order ID yang valid!\n");
+                    System.out.printf("Order ID: ");
+                    orderID = input.nextLine();
                 }
-                //Validasi input untuk order ID
-                while(orderID.length()!=16){
-                    System.out.println("Order ID minimal 16 karakter");
+
+                while(orderID.length()!=16 & !orderIDs.contains(orderID)){
+                    System.out.println("Order ID minimal 16 karakter\n");
                     System.out.printf("Order ID: ");
                     orderID = input.nextLine();
                 }
                 
-                while(!orderIDs.contains(orderID)){
-                    System.out.println("Silahkan masukkan Order ID yang valid!");
-                    System.out.printf("Order ID: ");
-                    orderID = input.nextLine();
+                if(orderIDs.contains(orderID)){ //Melakukan validasi apakah input sudah ada di array list order ID atau belum
+                    System.out.printf("Lokasi Pengiriman: ");
+                    lokasi = input.nextLine().toUpperCase();
+                    while(ongkir.get(lokasi)==null){
+                        System.out.println(generateBill(orderID, lokasi));
+                        System.out.printf("Order ID: ");
+                        orderID = input.nextLine();
+                        System.out.printf("Lokasi Pengiriman: ");
+                        lokasi = input.nextLine().toUpperCase();
+                    }
+
+                    if(ongkir.get(lokasi)!=null){
+                        System.out.println(); 
+                    }
+                    System.out.println(generateBill(orderID, lokasi));
                 }
             }
 
