@@ -6,8 +6,6 @@ import java.util.*;
 
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in); //Untuk input data
-    private static ArrayList<String> orderIDs = new ArrayList<>(); //Array list of order ID
-    private static HashMap<String, String> ongkir = new HashMap<>(); //Hash Map untuk lokasi dan biaya pengirimannya
 
     public static void showMenu(){  //function show menu
         System.out.println(">>=======================================<<");
@@ -92,23 +90,29 @@ public class OrderGenerator {
         output += check1;
         output+= check2;
 
-        orderIDs.add(output);
         return output;
     }
 
     public static String generateBill(String OrderID, String lokasi){
-        ongkir.put("P", "10.000"); //Memasukkan value pada hashmap
-        ongkir.put("U", "20.000");
-        ongkir.put("T", "35.000");
-        ongkir.put("S", "40.000");
-        ongkir.put("B", "60.000");
-
         String lokasiPrint = lokasi.toUpperCase();
-        String biayaOngkosKirim = ongkir.get(lokasiPrint); //mendapatkan harga pengiriman berdasarkan key hashmap
+        String biayaOngkosKirim = "0"; 
         String tanggalOrder = "";
-
-        if (biayaOngkosKirim == null) {
-            return "Harap masukkan lokasi pengiriman yang ada pada jangkauan!\n";
+        switch(lokasiPrint){
+            case "P" :
+                biayaOngkosKirim = "10.000";
+                break;
+            case "U" :
+                biayaOngkosKirim = "20.000";
+                break;
+            case "T" :
+                biayaOngkosKirim = "35.000";
+                break;
+            case "S" :
+                biayaOngkosKirim = "40.000";
+                break;
+            case "B" :
+                biayaOngkosKirim = "60.000";
+                break;
         }
         for(int s = 4; s<12;s++){
             if(s==5 || s==7){
@@ -182,34 +186,66 @@ public class OrderGenerator {
                 String lokasi = "";
                 System.out.printf("Order ID: ");
                 String orderID = input.nextLine();
+                
                  //Validasi input untuk order ID
-                while(!orderIDs.contains(orderID)&orderID.length()==16){
+                while(orderID.length()!=16){
+                    System.out.println("Order ID minimal 16 karakter\n");
+                    System.out.printf("Order ID: ");
+                    orderID = input.nextLine();
+                }
+
+                String valOrder = orderID.substring(0, 14);
+                int totalCheckSum1val = 0;
+                int totalCheckSum2val = 0;
+                for(int s = 0; s<valOrder.length();s++){
+                    if(s%2==0){
+                        totalCheckSum1val += convertCTV(valOrder.charAt(s)); //Membuat checksum index genap
+                    }
+                    else{
+                        totalCheckSum2val += convertCTV(valOrder.charAt(s)); //Membuat checksum index ganjil
+                    }
+                }
+        
+                int checkSum1 = totalCheckSum1val%36;
+                int checkSum2 = totalCheckSum2val%36;
+        
+                char check1 = convertVTC(checkSum1);
+                char check2 = convertVTC(checkSum2);
+                String  newValid = "";
+                newValid += valOrder+check1+check2;
+
+                while(!newValid.equals(orderID)){
                     System.out.println("Silahkan masukkan Order ID yang valid!\n");
                     System.out.printf("Order ID: ");
                     orderID = input.nextLine();
                 }
 
-                while(orderID.length()!=16 & !orderIDs.contains(orderID)){
-                    System.out.println("Order ID minimal 16 karakter\n");
-                    System.out.printf("Order ID: ");
-                    orderID = input.nextLine();
-                }
-                
-                if(orderIDs.contains(orderID)){ //Melakukan validasi apakah input sudah ada di array list order ID atau belum
+                if(newValid.equals(orderID)){ //Melakukan validasi apakah input sudah ada di array list order ID atau belum
                     System.out.printf("Lokasi Pengiriman: ");
                     lokasi = input.nextLine().toUpperCase();
-                    while(ongkir.get(lokasi)==null){
-                        System.out.println(generateBill(orderID, lokasi));
+                    boolean validasi = false;
+                    if(lokasi.equals("P")|lokasi.equals("U")|lokasi.equals("T")|lokasi.equals("S")|lokasi.equals("B")){
+                        validasi = false;
+                    }
+                    else{
+                        validasi = true;
+                    }
+                    while(validasi){ //validasi lokasi
+                        System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!\n");
                         System.out.printf("Order ID: ");
                         orderID = input.nextLine();
                         System.out.printf("Lokasi Pengiriman: ");
                         lokasi = input.nextLine().toUpperCase();
+                        if(lokasi.equals("P")|lokasi.equals("U")|lokasi.equals("T")|lokasi.equals("S")|lokasi.equals("B")){
+                            validasi = false;
+                        }
+                        else{
+                            validasi = true;
+                        }
                     }
 
-                    if(ongkir.get(lokasi)!=null){
-                        System.out.println(); 
-                    }
-                    System.out.println(generateBill(orderID, lokasi));
+                    System.out.printf("\n"+generateBill(orderID, lokasi));
+                    System.out.println("--------------------------------------------");
                 }
             }
 
