@@ -2,7 +2,7 @@ package assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.time.LocalDate; //import built in library untuk input tanggal
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class MainMenu {
@@ -145,10 +145,12 @@ public class MainMenu {
 
     public static User getUser(String nama, String nomorTelepon){
         User ret = null;
-        for(User usr : userList){
-            if(usr.getNama().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
-                ret = usr;
-                break;
+        if(userList != null){
+            for(User usr : userList){
+                if(usr.getNama().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
+                    ret = usr;
+                    break;
+                }
             }
         }
         return ret;
@@ -261,7 +263,7 @@ public class MainMenu {
             }
             int biayaOngkosKirim = user.getOngkir(user.getLokasi());
             System.out.println("Biaya Ongkos Kirim: Rp " + biayaOngkosKirim);
-            int totalHarga2 = (int) (totalHarga);
+            int totalHarga2 = (int)(totalHarga);
             int sumHarga = biayaOngkosKirim + totalHarga2;
             System.out.println("Total Biaya: Rp " + sumHarga);
             valid = false;
@@ -359,6 +361,9 @@ public class MainMenu {
             }
 
             for (Restaurant resto : restoList) {
+                if(resto==null){
+                    break;
+                }
                 if (resto.getNama().equals(nama)) {
                     System.out.printf("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda", nama);
                     vld = false;
@@ -420,7 +425,7 @@ public class MainMenu {
             System.out.println("Nama Restoran: ");
             String nama = input.nextLine();
             for(Restaurant resto : restoList){
-                if((resto.getName().toLowerCase()).equals(nama.toLowerCase())){
+                if((resto.getNama().toLowerCase()).equals(nama.toLowerCase())){
                     restoList.remove(resto);
                     System.out.println("Restoran berhasil dihapus");
                     isValid = true;
@@ -441,7 +446,7 @@ public class MainMenu {
     }
 
     public static void initUser(){
-        userList = new ArrayList<User>();
+        ArrayList<User> userList = new ArrayList<User>();
         userList.add(new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer"));
         userList.add(new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer"));
         userList.add(new User("Sofita Yasusa", "084789607222", "sofita.susa@gmail.com", "T", "Customer"));
@@ -494,3 +499,4 @@ public class MainMenu {
         System.out.print("Pilihan menu: ");
     }
 }
+
