@@ -1,5 +1,5 @@
 package assignments.assignment2;
-Import java.util.ArrayList;
+import java.util.ArrayList;
 public class User {
     private String nama;
     private String nomorTelepon;
