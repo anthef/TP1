@@ -1,4 +1,4 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 
 public class Restaurant {
     private String nama;
@@ -19,6 +19,9 @@ public class Restaurant {
     public void addMenu(Menu newMenu){
         menu.add(newMenu);
     }
+
+    public ArrayList<Menu> getMenuList() {
+        return this.menu;
+    }
     
-    // TODO: tambahkan methods yang diperlukan untuk class ini
 }

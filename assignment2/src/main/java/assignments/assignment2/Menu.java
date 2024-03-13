@@ -1,4 +1,4 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 
 public class Menu {
     private String namaMakanan; 
@@ -22,5 +22,6 @@ public class Menu {
         this.harga = harga;
     }
 
-    // TODO: tambahkan methods yang diperlukan untuk class ini
+    
+
 }

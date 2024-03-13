@@ -1,8 +1,7 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import assignments.assignment1.*;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);
@@ -12,8 +11,8 @@ public class MainMenu {
     public static void main(String[] args) {
         boolean programRunning = true;
         initUser();
+        printHeader();
         while(programRunning){
-            printHeader();
             startMenu();
             int command = input.nextInt();
             input.nextLine();
@@ -45,8 +44,8 @@ public class MainMenu {
                         input.nextLine();
 
                         switch(commandCust){
-                            case 1 -> handleBuatPesanan();
-                            case 2 -> handleCetakBill();
+                            case 1 -> handleBuatPesanan(userLoggedIn);
+                            case 2 -> handleCetakBill(userLoggedIn);
                             case 3 -> handleLihatMenu();
                             case 4 -> handleUpdateStatusPesanan();
                             case 5 -> isLoggedIn = false;
@@ -76,10 +75,76 @@ public class MainMenu {
         System.out.println("\nTerima kasih telah menggunakan DepeFood ^___^");
     }
 
+    public static int convertCTV(char c) {  //Function untuk mengubah character menjadi suatu value
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        } else if (c >= 'A' && c <= 'Z') {
+            return c - 'A' + 10;
+        } else {
+            return -1;
+        }
+    }
+
+    public static char convertVTC(int value) { //Function untuk mengembalikan character berdasarkan value yang dipunya
+        if (value >= 0 && value <= 9) {
+            return (char) (value + '0');
+        } else if (value >= 10 && value <= 35) {
+            return (char) (value - 10 + 'A');
+        } else {
+            return '?';
+        }
+    }
+
+    public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) { //Function untuk generate order ID
+        String namaRes = namaRestoran.substring(0,4); //Mengambil 4 karakter pertama dari input dan 
+        String output = "";
+        output+= namaRes.toUpperCase(); //Mengubah menjadi kapital
+
+        String [] tanggalSplit = tanggalOrder.split("/");
+        for(String tggl : tanggalSplit){
+            output += tggl; //Mengekstaksi input tanggal
+        }
+        
+        int totalDigitNoTelp = 0;
+        for(int k = 0; k<noTelepon.length();k++){
+            totalDigitNoTelp += Character.getNumericValue(noTelepon.charAt(k)); //Menjumlahkan seluruh digit nomor telepon
+        }
+        int digitNoTelp = totalDigitNoTelp%100;
+        if(digitNoTelp<10){
+            output += "0"+String.valueOf(digitNoTelp);
+        }
+        else{
+            output += String.valueOf(digitNoTelp);
+        }
+        
+
+        int totalCheckSum1 = 0;
+        int totalCheckSum2 = 0;
+        for(int l = 0; l<output.length();l++){
+            if(l%2==0){
+                totalCheckSum1 += convertCTV(output.charAt(l)); //Membuat checksum index genap
+            }
+            else{
+                totalCheckSum2 += convertCTV(output.charAt(l)); //Membuat checksum index ganjil
+            }
+        }
+
+        int checkSum1 = totalCheckSum1%36;
+        int checkSum2 = totalCheckSum2%36;
+
+        char check1 = convertVTC(checkSum1);
+        char check2 = convertVTC(checkSum2);
+
+        output += check1;
+        output+= check2;
+
+        return output;
+    }
+
     public static User getUser(String nama, String nomorTelepon){
         for(User usr : userList){
             if(usr.getName().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
-                return usr
+                return usr;
             }
             else {
                 return null;
@@ -87,25 +152,191 @@ public class MainMenu {
         }
     }
 
-    public static void handleBuatPesanan(){
+    public static void handleBuatPesanan(User user) {
         System.out.println("----------------Buat Pesanan----------------");
         boolean valid = true;
-        while(valid){
-            System.out.println("Nama Restoran: ");
+        while (valid) {
+            System.out.printf("Nama Restoran: ");
             String nama = input.nextLine();
+            boolean validNama = false;
+            Restaurant restos = null;
+            for (Restaurant resto : restoList) {
+                if (resto.getName().equalsIgnoreCase(nama)) {
+                    validNama = true;
+                    restos = resto;
+                    break;
+                }
+            }
+            if (!validNama) {
+                System.out.println("Restoran tidak terdaftar pada sistem.");
+                continue;
+            }
+
+            System.out.printf("Tanggal Pemesanan (DD/MM/YYYY): ");
+            String tanggalOrder = input.nextLine();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            try {
+                LocalDate tanggal = LocalDate.parse(tanggalOrder, formatter);
+            } catch (Exception e) {
+                System.out.printf("Masukkan tanggal sesuai format (DD/MM/YYYY)!\n\n");
+                continue;
+            }
+
+            System.out.printf("Jumlah Pesanan: ");
+            int jumlahPesanan = input.nextInt();
+            input.nextLine();
+            System.out.printf("Order: ");
+            String[] tempMenu = new String[jumlahPesanan];
+            for (int i = 0; i < jumlahPesanan; i++) {
+                String namaMenu = input.nextLine();
+                tempMenu[i] = namaMenu;
+            }
+
+            boolean semuaMenuValid = true;
+            Menu[] menuMakanan = new Menu[jumlahPesanan]; 
+            for (int k = 0; k < jumlahPesanan; k++) {
+                boolean found = false;
+                for (Menu restMenu : restos.getMenuList()) {
+                    if (restMenu.getNamaMakanan().equalsIgnoreCase(tempMenu[k])) {
+                        found = true;
+                        menuMakanan[k] = restMenu; 
+                        break;
+                    }
+                }
+                if (!found) {
+                    semuaMenuValid = false;
+                    System.out.println("Mohon memesan menu yang tersedia di Restoran!");
+                    break; 
+                }
+            }
+            if (!semuaMenuValid) {
+                continue;
+            }
+
+            String orderID = generateOrderID(nama, tanggalOrder, user.getNomorTelepon());
+            Order newOrder = new Order(orderID, tanggalOrder, user.getOngkir(), restos, menuMakanan);
+            user.addOrderHistory(newOrder);
+            System.out.println("Pesanan dengan ID " + orderID + " diterima!");
+            valid = false;
         }
     }
 
-    public static void handleCetakBill(){
+    public static void handleCetakBill(User user){
         System.out.println("----------------Cetak Bill----------------");
+        boolean valid = true;
+        while(valid){
+            System.out.printf("Masukkan Order ID: ");
+            String orderID = input.nextLine();
+            boolean isValid = true;
+            Order tempOrder = null;
+            for(Order order : user.getOrderHistory()){
+                if(orderID.equals(order.getOrderID())){
+                    tempOrder = order;
+                    break;
+                }
+                isValid=false;
+            }
+            if(!isValid){
+                System.out.println("Order ID tidak dapat ditemukan.\n")
+                continue;
+            }
+            System.out.println("Bill:");
+            System.out.println("Order ID: " + orderID);
+            System.out.println("Tanggal Pemesanan: " + tempOrder.getTanggalPemesanan());
+            System.out.println("Restaurant: " + tempOrder.getRestaurantName());
+            System.out.println("Lokasi Pengiriman: " + user.getLokasi());
+            if(!tempOrder.getOrderFinished()){
+                System.out.println("Status Pengiriman: " + "Not Finished");
+            }
+            else{
+                System.out.println("Status Pengiriman: " + "Selesai");
+            }
+            System.out.println("Pesanan:");
+            double totalHarga = 0;
+            for(Menu menu : tempOrder.getItemsList()){
+                System.out.println("- " + menu.getNamaMakanan() + " " + menu.getHarga());
+                totalHarga += menu.getHarga();
+            }
+            int biayaOngkosKirim = user.getOngkir();
+            System.out.println("Biaya Ongkos Kirim: Rp " + biayaOngkosKirim);
+            int sumHarga = biayaOngkosKirim + Integer.parseInteger(totalHarga);
+            System.out.println("Total Biaya: Rp " + sumHarga);
+            valid = false;
+        }
     }
 
     public static void handleLihatMenu(){
         System.out.println("----------------Lihat Menu----------------");
+        boolean valid = true;
+        while(valid){
+            System.out.printf("Nama Restoran: ");
+            String namaRestoran = input.nextLine();
+    
+            Restaurant restoranDitemukan = null;
+            for (Restaurant resto : restoList) {
+                if (resto.getNama().equalsIgnoreCase(namaRestoran)) {
+                    restoranDitemukan = resto;
+                    break;
+                }
+            }
+    
+            if (restoranDitemukan == null) {
+                System.out.println("Restoran tidak ditemukan.");
+                continue;
+            }
+    
+            ArrayList<Menu> daftarMenu = restoranDitemukan.getMenu();
+            for (int i = 0; i < daftarMenu.size() - 1; i++) {
+                for (int j = 0; j < daftarMenu.size() - i - 1; j++) {
+                    if (daftarMenu.get(j).getHarga() > daftarMenu.get(j + 1).getHarga()) {
+                        Menu temp = daftarMenu.get(j);
+                        daftarMenu.set(j, daftarMenu.get(j + 1));
+                        daftarMenu.set(j + 1, temp);
+                    } else if (daftarMenu.get(j).getHarga() == daftarMenu.get(j + 1).getHarga()) {
+                        if (daftarMenu.get(j).getNamaMakanan().compareTo(daftarMenu.get(j + 1).getNamaMakanan()) > 0) {
+                            Menu temp = daftarMenu.get(j);
+                            daftarMenu.set(j, daftarMenu.get(j + 1));
+                            daftarMenu.set(j + 1, temp);
+                        }
+                    }
+                }
+            }
+            
+            int counter = 1;
+            for (Menu menu : daftarMenu) {
+                System.out.println(counter + ". " +menu.getNamaMakanan() + " " + menu.getHarga());
+                counter +=1;
+            }
+        }
     }
+    
 
     public static void handleUpdateStatusPesanan(){
         System.out.println("----------------Update Status Pesanan----------------");
+        while(valid){
+            System.out.printf("Masukkan Order ID: ");
+            String orderID = input.nextLine();
+            boolean isValid = true;
+            Order tempOrder = null;
+            for(Order order : user.getOrderHistory()){
+                if(orderID.equals(order.getOrderID())){
+                    tempOrder = order;
+                    break;
+                }
+                isValid=false;
+            }
+            if(!isValid){
+                System.out.println("Order ID tidak dapat ditemukan.\n")
+                continue;
+            }
+            System.out.printf("Status: ")
+            String status = input.nextLineI();
+            if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){
+                System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
+            }
+            else{
+                System.out.println("Status pesanan dengan ID " + orderID + " tidak berhasil diupdate!");
+            }
     }
 
     public static void handleTambahRestoran() {
@@ -114,7 +345,7 @@ public class MainMenu {
         while(isValid){
             boolean vld = true;
             boolean vld2 = true;
-            System.out.print("Nama: ");
+            System.out.printf("Nama: ");
             String nama = input.nextLine();
 
             if (nama.length() < 4) {
@@ -133,7 +364,7 @@ public class MainMenu {
                 continue;
             }
 
-            System.out.print("Jumlah Makanan: ");
+            System.out.printf("Jumlah Makanan: ");
             int jumlahMakanan = input.nextInt();
             input.nextLine(); 
 

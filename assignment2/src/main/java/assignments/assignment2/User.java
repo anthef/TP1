@@ -1,4 +1,4 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
 
 public class User {
     private String nama;
@@ -27,6 +27,35 @@ public class User {
     }
     public String getLokasi(){
         return lokasi;
+    }
+    public void addOrderHistory(Order newOrder){
+        orderHistory.add(newOrder);
+    }
+
+    public ArrayList<Menu> getOrderHistory() {
+        return this.orderHistory;
+    }
+
+    public int getOngkir(String lokasi){
+        int biayaOngkosKirim = 0;
+        switch(lokasi){
+            case "P" :
+                biayaOngkosKirim = 10000;
+                break;
+            case "U" :
+                biayaOngkosKirim = 20000;
+                break;
+            case "T" :
+                biayaOngkosKirim = 35000;
+                break;
+            case "S" :
+                biayaOngkosKirim = 40000;
+                break;
+            case "B" :
+                biayaOngkosKirim = 60000;
+                break;
+        }
+        return biayaOngkosKirim;
     }
 
     
