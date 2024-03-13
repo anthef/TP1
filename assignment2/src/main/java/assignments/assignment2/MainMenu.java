@@ -237,7 +237,7 @@ public class MainMenu {
                 isValid=false;
             }
             if(!isValid){
-                System.out.println("Order ID tidak dapat ditemukan.\n")
+                System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
             }
             System.out.println("Bill:");
@@ -326,10 +326,10 @@ public class MainMenu {
                 isValid=false;
             }
             if(!isValid){
-                System.out.println("Order ID tidak dapat ditemukan.\n")
+                System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
             }
-            System.out.printf("Status: ")
+            System.out.printf("Status: ");
             String status = input.nextLineI();
             if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){
                 System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
