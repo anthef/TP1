@@ -1,10 +1,25 @@
 package main.java.assignments.assignment2;
 
 public class Order {
-     // TODO: tambahkan attributes yang diperlukan untuk class ini
+    private String orderID;
+    private String tanggalPemesanan;
+    private int biayaOngkosKirim;
+    private Restaurant restaurant;
+    private ArrayList<Menu> items = new ArrayList<Menu>();
+    private Boolean orderFinished;
+
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
-        // TODO: buat constructor untuk class ini
+        this.orderID = orderId;
+        this.tanggalPemesanan = tanggal;
+        this.biayaOngkosKirim = ongkir;
+        this.restaurant = resto;
+        for(Menu itm : items){
+            this.items.add(itm);
+        }
     }
-    
-    // TODO: tambahkan methods yang diperlukan untuk class ini
+
+    public String getOrderID(){
+        return orderID;
+    }
+    public String 
 }
