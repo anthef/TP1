@@ -1,11 +1,11 @@
 package assignments.assignment2;
-
+Import java.util.ArrayList;
 public class User {
     private String nama;
     private String nomorTelepon;
     private String email;
     private String lokasi;
-    static String role;
+    String role;
     private ArrayList<Order> orderHistory = new ArrayList<Order>();
     
     public User(String nama, String nomorTelepon, String email, String lokasi, String role){
@@ -32,8 +32,8 @@ public class User {
         orderHistory.add(newOrder);
     }
 
-    public ArrayList<Menu> getOrderHistory() {
-        return this.orderHistory;
+    public ArrayList<Order> getOrderHistory() {
+        return orderHistory;
     }
 
     public int getOngkir(String lokasi){

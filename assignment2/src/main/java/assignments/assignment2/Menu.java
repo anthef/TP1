@@ -12,16 +12,13 @@ public class Menu {
     public String getNamaMakanan(){
         return namaMakanan;
     }
-    public Double getHarga(){
+    public double getHarga(){
         return harga;
     }
     public void setNamaMakanan(String namaMakanan){
         this.namaMakanan = namaMakanan;
     }
-    public void setHarga(String harga){
+    public void setHarga(Double harga){
         this.harga = harga;
     }
-
-    
-
 }

@@ -1,4 +1,5 @@
 package assignments.assignment2;
+import java.util.ArrayList;
 
 public class Order {
     private String orderID;
@@ -25,7 +26,7 @@ public class Order {
         return tanggalPemesanan;
     }
     public String getRestaurantName() {
-        return resto.getName();
+        return restaurant.getNama();
     }
     public Boolean getOrderFinished(){
         return orderFinished;

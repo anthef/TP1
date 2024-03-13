@@ -2,6 +2,8 @@ package assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate; //import built in library untuk input tanggal
+import java.time.format.DateTimeFormatter;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);
@@ -47,7 +49,7 @@ public class MainMenu {
                             case 1 -> handleBuatPesanan(userLoggedIn);
                             case 2 -> handleCetakBill(userLoggedIn);
                             case 3 -> handleLihatMenu();
-                            case 4 -> handleUpdateStatusPesanan();
+                            case 4 -> handleUpdateStatusPesanan(userLoggedIn);
                             case 5 -> isLoggedIn = false;
                             default -> System.out.println("Perintah tidak diketahui, silakan coba kembali");
                         }
@@ -142,14 +144,14 @@ public class MainMenu {
     }
 
     public static User getUser(String nama, String nomorTelepon){
+        User ret = null;
         for(User usr : userList){
-            if(usr.getName().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
-                return usr;
-            }
-            else {
-                return null;
+            if(usr.getNama().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
+                ret = usr;
+                break;
             }
         }
+        return ret;
     }
 
     public static void handleBuatPesanan(User user) {
@@ -161,7 +163,7 @@ public class MainMenu {
             boolean validNama = false;
             Restaurant restos = null;
             for (Restaurant resto : restoList) {
-                if (resto.getName().equalsIgnoreCase(nama)) {
+                if (resto.getNama().equalsIgnoreCase(nama)) {
                     validNama = true;
                     restos = resto;
                     break;
@@ -214,7 +216,7 @@ public class MainMenu {
             }
 
             String orderID = generateOrderID(nama, tanggalOrder, user.getNomorTelepon());
-            Order newOrder = new Order(orderID, tanggalOrder, user.getOngkir(), restos, menuMakanan);
+            Order newOrder = new Order(orderID, tanggalOrder, user.getOngkir(user.getLokasi()), restos, menuMakanan);
             user.addOrderHistory(newOrder);
             System.out.println("Pesanan dengan ID " + orderID + " diterima!");
             valid = false;
@@ -257,9 +259,10 @@ public class MainMenu {
                 System.out.println("- " + menu.getNamaMakanan() + " " + menu.getHarga());
                 totalHarga += menu.getHarga();
             }
-            int biayaOngkosKirim = user.getOngkir();
+            int biayaOngkosKirim = user.getOngkir(user.getLokasi());
             System.out.println("Biaya Ongkos Kirim: Rp " + biayaOngkosKirim);
-            int sumHarga = biayaOngkosKirim + Integer.parseInteger(totalHarga);
+            int totalHarga2 = (int) (totalHarga);
+            int sumHarga = biayaOngkosKirim + totalHarga2;
             System.out.println("Total Biaya: Rp " + sumHarga);
             valid = false;
         }
@@ -285,7 +288,7 @@ public class MainMenu {
                 continue;
             }
     
-            ArrayList<Menu> daftarMenu = restoranDitemukan.getMenu();
+            ArrayList<Menu> daftarMenu = restoranDitemukan.getMenuList();
             for (int i = 0; i < daftarMenu.size() - 1; i++) {
                 for (int j = 0; j < daftarMenu.size() - i - 1; j++) {
                     if (daftarMenu.get(j).getHarga() > daftarMenu.get(j + 1).getHarga()) {
@@ -311,8 +314,9 @@ public class MainMenu {
     }
     
 
-    public static void handleUpdateStatusPesanan(){
+    public static void handleUpdateStatusPesanan(User user){
         System.out.println("----------------Update Status Pesanan----------------");
+        boolean valid = true;
         while(valid){
             System.out.printf("Masukkan Order ID: ");
             String orderID = input.nextLine();
@@ -330,13 +334,14 @@ public class MainMenu {
                 continue;
             }
             System.out.printf("Status: ");
-            String status = input.nextLineI();
+            String status = input.nextLine();
             if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){
                 System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
             }
             else{
                 System.out.println("Status pesanan dengan ID " + orderID + " tidak berhasil diupdate!");
             }
+        }
     }
 
     public static void handleTambahRestoran() {
@@ -488,5 +493,4 @@ public class MainMenu {
         System.out.println("--------------------------------------------");
         System.out.print("Pilihan menu: ");
     }
-}
 }
