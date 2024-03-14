@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);
-    private static ArrayList<Restaurant> restoList;
-    private static ArrayList<User> userList;
+    private static ArrayList<Restaurant> restoList = new ArrayList<Restaurant>();
+    private static ArrayList<User> userList = new ArrayList<User>();
 
     public static void main(String[] args) {
         boolean programRunning = true;
@@ -27,7 +27,7 @@ public class MainMenu {
                 String noTelp = input.nextLine();
 
                 User userLoggedIn; 
-                userLoggedIn = getUser(nama,noTelp);
+                userLoggedIn = getUser(nama, noTelp);
                 if(userLoggedIn!=null){
                     System.out.printf("Selamat datang %s!", nama);
                 }
@@ -172,7 +172,7 @@ public class MainMenu {
                 }
             }
             if (!validNama) {
-                System.out.println("Restoran tidak terdaftar pada sistem.");
+                System.out.println("Restoran tidak terdaftar pada sistem.\n");
                 continue;
             }
 
@@ -189,7 +189,7 @@ public class MainMenu {
             System.out.printf("Jumlah Pesanan: ");
             int jumlahPesanan = input.nextInt();
             input.nextLine();
-            System.out.printf("Order: ");
+            System.out.println("Order: ");
             String[] tempMenu = new String[jumlahPesanan];
             for (int i = 0; i < jumlahPesanan; i++) {
                 String namaMenu = input.nextLine();
@@ -231,14 +231,14 @@ public class MainMenu {
         while(valid){
             System.out.printf("Masukkan Order ID: ");
             String orderID = input.nextLine();
-            boolean isValid = true;
+            boolean isValid = false;
             Order tempOrder = null;
             for(Order order : user.getOrderHistory()){
                 if(orderID.equals(order.getOrderID())){
                     tempOrder = order;
+                    isValid= true;
                     break;
                 }
-                isValid=false;
             }
             if(!isValid){
                 System.out.println("Order ID tidak dapat ditemukan.\n");
@@ -258,7 +258,8 @@ public class MainMenu {
             System.out.println("Pesanan:");
             double totalHarga = 0;
             for(Menu menu : tempOrder.getItemsList()){
-                System.out.println("- " + menu.getNamaMakanan() + " " + menu.getHarga());
+                int harga = (int) menu.getHarga();
+                System.out.println("- " + menu.getNamaMakanan() + " " + harga);
                 totalHarga += menu.getHarga();
             }
             int biayaOngkosKirim = user.getOngkir(user.getLokasi());
@@ -308,10 +309,13 @@ public class MainMenu {
             }
             
             int counter = 1;
+            System.out.println("Menu:");
             for (Menu menu : daftarMenu) {
-                System.out.println(counter + ". " +menu.getNamaMakanan() + " " + menu.getHarga());
+                int harga = (int) menu.getHarga();
+                System.out.println(counter + ". " +menu.getNamaMakanan() + " " + harga);
                 counter +=1;
             }
+            valid = false;
         }
     }
     
@@ -339,6 +343,8 @@ public class MainMenu {
             String status = input.nextLine();
             if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){
                 System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
+                tempOrder.setOrderFinished(true);
+                valid = false;
             }
             else{
                 System.out.println("Status pesanan dengan ID " + orderID + " tidak berhasil diupdate!");
@@ -356,18 +362,20 @@ public class MainMenu {
             String nama = input.nextLine();
 
             if (nama.length() < 4) {
-                System.out.println("Nama Restoran tidak valid");
+                System.out.println("Nama Restoran tidak valid!\n\n");
                 continue;
             }
-
-            for (Restaurant resto : restoList) {
-                if(resto==null){
-                    break;
-                }
-                if (resto.getNama().equals(nama)) {
-                    System.out.printf("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda", nama);
-                    vld = false;
-                    break;
+            if(restoList != null)
+            {
+                for (Restaurant resto : restoList) {
+                    if(resto==null){
+                        break;
+                    }
+                    if (resto.getNama().equals(nama)) {
+                        System.out.printf("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!\n\n", nama);
+                        vld = false;
+                        break;
+                    }
                 }
             }
             if(!vld){
@@ -390,7 +398,7 @@ public class MainMenu {
                 try {
                     double harga = Double.parseDouble(mknSplit[mknSplit.length - 1]);
                 } catch (NumberFormatException e) {
-                    System.out.println("Harga menu harus bilangan bulat!");
+                    System.out.println("Harga menu harus bilangan bulat!\n");
                     vld = false;
                     break;
                 }
@@ -422,7 +430,7 @@ public class MainMenu {
         boolean valid = true;
         while(valid){
             boolean isValid = false;
-            System.out.println("Nama Restoran: ");
+            System.out.printf("Nama Restoran: ");
             String nama = input.nextLine();
             for(Restaurant resto : restoList){
                 if((resto.getNama().toLowerCase()).equals(nama.toLowerCase())){
@@ -446,7 +454,6 @@ public class MainMenu {
     }
 
     public static void initUser(){
-        ArrayList<User> userList = new ArrayList<User>();
         userList.add(new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer"));
         userList.add(new User("Sekar Andita", "089877658190", "dita.sekar@gmail.com", "B", "Customer"));
         userList.add(new User("Sofita Yasusa", "084789607222", "sofita.susa@gmail.com", "T", "Customer"));
@@ -499,4 +506,5 @@ public class MainMenu {
         System.out.print("Pilihan menu: ");
     }
 }
+
 

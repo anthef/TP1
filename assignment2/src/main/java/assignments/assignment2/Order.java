@@ -7,7 +7,7 @@ public class Order {
     private int biayaOngkosKirim;
     private Restaurant restaurant;
     private ArrayList<Menu> items = new ArrayList<Menu>();
-    private Boolean orderFinished;
+    private Boolean orderFinished = false;
 
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
         this.orderID = orderId;
