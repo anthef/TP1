@@ -1,6 +1,7 @@
 package assignments.assignment2;
 import java.util.ArrayList;
 public class User {
+    //Atribut
     private String nama;
     private String nomorTelepon;
     private String email;
@@ -8,6 +9,7 @@ public class User {
     String role;
     private ArrayList<Order> orderHistory = new ArrayList<Order>();
     
+    //Constructor
     public User(String nama, String nomorTelepon, String email, String lokasi, String role){
         this.nama = nama;
         this.nomorTelepon = nomorTelepon;
@@ -16,6 +18,7 @@ public class User {
         this.role = role;
     }
 
+    //Getter
     public String getNama(){
         return nama;
     }
@@ -28,14 +31,16 @@ public class User {
     public String getLokasi(){
         return lokasi;
     }
-    public void addOrderHistory(Order newOrder){
-        orderHistory.add(newOrder);
-    }
 
     public ArrayList<Order> getOrderHistory() {
         return orderHistory;
     }
+    //Setter
+    public void addOrderHistory(Order newOrder){
+        orderHistory.add(newOrder);
+    }
 
+    //Ongkir method
     public int getOngkir(String lokasi){
         int biayaOngkosKirim = 0;
         switch(lokasi){

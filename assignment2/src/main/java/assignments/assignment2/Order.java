@@ -2,6 +2,7 @@ package assignments.assignment2;
 import java.util.ArrayList;
 
 public class Order {
+    //Atribut
     private String orderID;
     private String tanggalPemesanan;
     private int biayaOngkosKirim;
@@ -9,6 +10,7 @@ public class Order {
     private ArrayList<Menu> items = new ArrayList<Menu>();
     private Boolean orderFinished = false;
 
+    //Constructor
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
         this.orderID = orderId;
         this.tanggalPemesanan = tanggal;
@@ -19,6 +21,7 @@ public class Order {
         }
     }
 
+    //Getter
     public String getOrderID(){
         return orderID;
     }
@@ -31,11 +34,13 @@ public class Order {
     public Boolean getOrderFinished(){
         return orderFinished;
     }
-    public void setOrderFinished(Boolean finished){
-        this.orderFinished=finished;
-    }
+
     public ArrayList<Menu> getItemsList() {
         return this.items;
+    }
+    //Setter
+    public void setOrderFinished(Boolean finished){
+        this.orderFinished=finished;
     }
     
     
