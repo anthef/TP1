@@ -222,7 +222,7 @@ public class MainMenu { //class utama
             String orderID = generateOrderID(nama, tanggalOrder, user.getNomorTelepon()); //membuat order id
             Order newOrder = new Order(orderID, tanggalOrder, user.getOngkir(user.getLokasi()), restos, menuMakanan); //Membuat object order dan menambahkannya ke order history
             user.addOrderHistory(newOrder);
-            System.out.println("Pesanan dengan ID " + orderID + " diterima!"); 
+            System.out.print("Pesanan dengan ID " + orderID + " diterima!"); 
             valid = false;
         }
     }
@@ -269,7 +269,7 @@ public class MainMenu { //class utama
             System.out.println("Biaya Ongkos Kirim: Rp " + biayaOngkosKirim);
             int totalHarga2 = (int)(totalHarga);
             int sumHarga = biayaOngkosKirim + totalHarga2;
-            System.out.println("Total Biaya: Rp " + sumHarga);
+            System.out.print("Total Biaya: Rp " + sumHarga);
             valid = false;
         }
     }
@@ -350,7 +350,7 @@ public class MainMenu { //class utama
             System.out.printf("Status: ");
             String status = input.nextLine();
             if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){ //Jika kondisi sebelumnya false dan status ingin dirubah
-                System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
+                System.out.printf("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
                 tempOrder.setOrderFinished(true);
                 valid = false;
             }
@@ -405,7 +405,7 @@ public class MainMenu { //class utama
             for (String makanan : makananArray) {
                 String[] mknSplit = makanan.split(" ");
                 try {
-                    double harga = Double.parseDouble(mknSplit[mknSplit.length() - 1]);
+                    double harga = Double.parseDouble(mknSplit[mknSplit.length - 1]);
                 } catch (NumberFormatException e) {
                     System.out.println("Harga menu harus bilangan bulat!\n"); //Melakukan validasi bahwa harga menu makanan harus bilangan bulat
                     vld = false;
@@ -430,7 +430,7 @@ public class MainMenu { //class utama
                 newRestaurant.addMenu(menu);
             }
             restoList.add(newRestaurant);
-            System.out.println("Restaurant %s Berhasil terdaftar.", nama);
+            System.out.printf("Restaurant %s Berhasil terdaftar.", nama);
             isValid = false;
         }
     }
@@ -445,7 +445,7 @@ public class MainMenu { //class utama
             for(Restaurant resto : restoList){
                 if((resto.getNama().toLowerCase()).equals(nama.toLowerCase())){
                     restoList.remove(resto);
-                    System.out.println("Restoran berhasil dihapus");
+                    System.out.print("Restoran berhasil dihapus");
                     isValid = true;
                     break;
                 }
@@ -516,5 +516,6 @@ public class MainMenu { //class utama
         System.out.print("Pilihan menu: ");
     }
 }
+
 
 
