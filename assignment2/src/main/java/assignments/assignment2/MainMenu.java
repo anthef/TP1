@@ -345,14 +345,14 @@ public class MainMenu { //class utama
         while(valid){
             System.out.printf("Masukkan Order ID: ");
             String orderID = input.nextLine();
-            boolean isValid = true;
+            boolean isValid = false;
             Order tempOrder = null;
-            for(Order order : user.getOrderHistory()){  //validasi apakah order id sudah terdaftar atau belum
+            for(Order order : user.getOrderHistory()){ //Melakukan validasi apakah order id sudah terdaftar
                 if(orderID.equals(order.getOrderID())){
                     tempOrder = order;
+                    isValid= true;
                     break;
                 }
-                isValid=false;
             }
             if(!isValid){
                 System.out.println("Order ID tidak dapat ditemukan.\n");
