@@ -100,9 +100,20 @@ public class MainMenu { //class utama
     }
 
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) { //Function untuk generate order ID
-        String namaRes = namaRestoran.substring(0,4); //Mengambil 4 karakter pertama dari input dan 
-        String output = "";
-        output+= namaRes.toUpperCase(); //Mengubah menjadi kapital
+        String output = ""; 
+        char compare = ' '; //Mengambil 4 karakter pertama
+        for(int i = 0;  i<namaRestoran.length(); i++){
+            char current  = namaRestoran.charAt(i);
+            if(output.length()<4 && (current != compare)){
+                output += Character.toUpperCase(current);
+            }
+            else if(output.length()<4 && (current == compare)){
+                continue;
+            }
+            if(output.length()==4){
+                break;
+            }
+        }
 
         String [] tanggalSplit = tanggalOrder.split("/");
         for(String tggl : tanggalSplit){

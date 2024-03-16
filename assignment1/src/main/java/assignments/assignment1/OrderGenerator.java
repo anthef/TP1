@@ -48,9 +48,20 @@ public class OrderGenerator {
     
 
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) { //Function untuk generate order ID
-        String namaRes = namaRestoran.substring(0,4); //Mengambil 4 karakter pertama dari input dan 
         String output = "";
-        output+= namaRes.toUpperCase(); //Mengubah menjadi kapital
+        char compare = ' '; //Mengambil 4 karakter pertamac
+        for(int i = 0;  i<namaRestoran.length(); i++){
+            char current  = namaRestoran.charAt(i);
+            if(output.length()<4 && (current != compare)){
+                output += Character.toUpperCase(current);
+            }
+            else if(output.length()<4 && (current == compare)){
+                continue;
+            }
+            if(output.length()==4){
+                break;
+            }
+        }
 
         String [] tanggalSplit = tanggalOrder.split("/");
         for(String tggl : tanggalSplit){
@@ -149,7 +160,6 @@ public class OrderGenerator {
                     System.out.printf("Nama Restoran tidak valid!\n\n");
                     continue;
                 }
-                String namaRestoran = tempNamaRestoran.substring(0, 4);
 
                 System.out.printf("Tanggal Pemesanan: "); //Melakukan input tanggal pemesanan
                 String tanggalOrder = input.nextLine();
@@ -178,7 +188,7 @@ public class OrderGenerator {
                     continue;
                 }
 
-                System.out.println("Order ID " + generateOrderID(namaRestoran, tanggalOrder,noTelepon) + " diterima!"); //Output apabila ketentuan input semua nya terpenuhi
+                System.out.println("Order ID " + generateOrderID(tempNamaRestoran, tanggalOrder,noTelepon) + " diterima!"); //Output apabila ketentuan input semua nya terpenuhi
                 System.out.println("--------------------------------------------");
 
             }
