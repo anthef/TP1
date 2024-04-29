@@ -1,15 +1,17 @@
-package assignments.assignment3.payment;
+package assignments.assignment3.payment; //package
 
 public class CreditCardPayment implements DepeFoodPaymentSystem {
-    final private double TRANSACTIONFEEPERCENTAGE = 0.02;
+    //Datafield
+    final private double TRANSACTIONFEEPERCENTAGE = 0.02; 
     private double transactionFee;
 
-    public long countTransactionFee(long amount){
+    public long countTransactionFee(long amount){ //Count transaction fee method
         double transactionFee = TRANSACTIONFEEPERCENTAGE * amount;
         long tf = (long) transactionFee;
         return tf;
     }
 
+    //override process payment
     @Override
     public long processPayment(long amount){
         return countTransactionFee(amount) + amount;

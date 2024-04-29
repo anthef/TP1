@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Restaurant {
+    //Datafield
     private String nama;
     private ArrayList<Menu> menu;
     private long saldo;
 
+    //Constructor
     public Restaurant(String nama){
         this.nama = nama;
         this.menu = new ArrayList<>();
     }
     
+    //Getter Setter
     public String getNama() {
         return nama;
     }

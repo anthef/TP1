@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import assignments.assignment3.payment.DepeFoodPaymentSystem;
 
 public class User {
-    
+    //Datafield
     private String nama;
     private String nomorTelepon;
     private String email;
@@ -12,8 +12,9 @@ public class User {
     public String role;
     private DepeFoodPaymentSystem payment;
     private long saldo;
-
     private String lokasi;
+
+    //Constructor
     public User(String nama, String nomorTelepon, String email, String lokasi, String role, DepeFoodPaymentSystem payment, long saldo){
         this.nama = nama;
         this.nomorTelepon = nomorTelepon;
@@ -24,6 +25,7 @@ public class User {
         this.payment = payment;
         orderHistory = new ArrayList<>();
     }
+    //Getter Setter
     public String getEmail() {
         return email;
     }
@@ -70,6 +72,7 @@ public class User {
         return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
     }
 
+    //Get ongkir method
     public int getOngkir(String lokasi){
         int biayaOngkosKirim = 0;
         switch(lokasi){

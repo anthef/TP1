@@ -1,8 +1,8 @@
 package assignments.assignment3;
 
+//Import library
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import assignments.assignment3.payment.*;
 import assignments.assignment3.LoginManager;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
@@ -10,13 +10,14 @@ import assignments.assignment3.systemCLI.CustomerSystemCLI;
 import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class MainMenu {
+    //Datafield
     private final Scanner input;
     private final LoginManager loginManager;
     private static ArrayList<Restaurant> restoList = new ArrayList<>();
     private static ArrayList<User> userList;
     private static User userLoggedIn;
 
-    
+    //Constructor
     public MainMenu(Scanner in, LoginManager loginManager) {
         this.input = in;
         this.loginManager = loginManager;
@@ -53,8 +54,7 @@ public class MainMenu {
         System.out.print("Nomor Telepon: ");
         String noTelp = input.nextLine();
 
-        User userLoggedIn; 
-        MainMenu.userLoggedIn = getUser(nama, noTelp);
+        MainMenu.userLoggedIn = getUser(nama, noTelp); //User assignment
         if(MainMenu.userLoggedIn!=null){
             System.out.printf("Selamat datang %s!", nama);
         }
@@ -63,6 +63,7 @@ public class MainMenu {
             login();
         }
 
+        //Assign customer system and admin system
         UserSystemCLI user = loginManager.getSystem(MainMenu.userLoggedIn.role);
         if((MainMenu.userLoggedIn.role).equals("Customer")){
             CustomerSystemCLI users = (CustomerSystemCLI) user;

@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 import assignments.assignment3.payment.*;
 import assignments.assignment3.MainMenu;
-import assignments.assignment3.OrderGenerator;
 
 
 public class CustomerSystemCLI extends UserSystemCLI  {
@@ -351,6 +350,10 @@ public class CustomerSystemCLI extends UserSystemCLI  {
             System.out.print("Pilihan Metode Pembayaran: ");
             int metodePembayaran = input.nextInt();
             if(user.getPayment() instanceof CreditCardPayment && (metodePembayaran==1)){
+                if(tempOrder.getOrderFinished()){
+                    System.out.println("Pesanan dengan ID ini sudah lunas!");
+                }
+                else{
                 CreditCardPayment payment = (CreditCardPayment) user.getPayment();
                 long charge = payment.countTransactionFee(totalPembayaran);
                 long biayaResult = payment.processPayment(totalPembayaran);
@@ -358,6 +361,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
                 resto.setSaldo(resto.getSaldo()+totalPembayaran);
                 tempOrder.setOrderFinished(true);
                 System.out.print("Berhasil Membayar Bill sebesar Rp " + sumHarga + " dengan biaya transaksi sebesar Rp " + charge);
+                }
             }
             else if (((user.getPayment() instanceof CreditCardPayment) && (metodePembayaran == 2)) || 
                 ((user.getPayment() instanceof DebitPayment) && (metodePembayaran == 1))) {System.out.println("User belum memiliki metode pembayaran ini!");
@@ -383,38 +387,6 @@ public class CustomerSystemCLI extends UserSystemCLI  {
             }
         }
     }
-
-    // public void handleUpdateStatusPesanan(){
-    //     System.out.println("----------------Update Status Pesanan----------------");
-    //     boolean valid = true;
-    //     while(valid){
-    //         System.out.printf("Masukkan Order ID: ");
-    //         String orderID = input.nextLine();
-    //         boolean isValid = false;
-    //         Order tempOrder = null;
-    //         for(Order order : user.getOrderHistory()){ //Melakukan validasi apakah order id sudah terdaftar
-    //             if(orderID.equals(order.getOrderId())){
-    //                 tempOrder = order;
-    //                 isValid= true;
-    //                 break;
-    //             }
-    //         }
-    //         if(!isValid){
-    //             System.out.println("Order ID tidak dapat ditemukan.\n");
-    //             continue;
-    //         }
-    //         System.out.printf("Status: ");
-    //         String status = input.nextLine();
-    //         if(status.equals("Selesai") & (tempOrder.getOrderFinished() == false)){ //Jika kondisi sebelumnya false dan status ingin dirubah
-    //             System.out.printf("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
-    //             tempOrder.setOrderFinished(true);
-    //             valid = false;
-    //         }
-    //         else{
-    //             System.out.println("Status pesanan dengan ID " + orderID + " tidak berhasil diupdate!\n");
-    //         }
-    //     }
-    // }
 
     void handleCekSaldo(){
         User user = MainMenu.setUser();

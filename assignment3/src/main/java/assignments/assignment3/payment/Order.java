@@ -1,10 +1,8 @@
 package assignments.assignment3.payment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class Order {
     
+    //Datafield
     private String OrderId;
     private String tanggal;
     private int ongkir;
@@ -12,6 +10,7 @@ public class Order {
     private boolean orderFinished;
     private Menu[] items;
 
+    //Constructor
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
         this.OrderId = orderId;
         this.tanggal = tanggal;
@@ -20,6 +19,7 @@ public class Order {
         this.orderFinished = false;
         this.items = items;
     }
+    //Getter and setter
     public Restaurant getRestaurant() {
         return restaurant;
     }
@@ -41,6 +41,8 @@ public class Order {
     public Menu[] getItems() {
         return items;
     }
+
+    //Sorted menu
     public Menu[] getSortedMenu(){
         Menu[] menuArr = new Menu[getItems().length];
         for(int i=0; i < getItems().length;i++){
@@ -59,6 +61,7 @@ public class Order {
         }
         return menuArr;
     }
+    //total harga
     public double getTotalHarga(){
         double sum = 0;
         for(Menu menu: getItems()){
