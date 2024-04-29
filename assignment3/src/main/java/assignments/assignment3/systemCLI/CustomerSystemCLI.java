@@ -36,7 +36,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
 
     @Override
     protected void displayMenu() {
-        System.out.println("--------------------------------------------");
+        System.out.println("\n--------------------------------------------");
         System.out.println("Pilih menu:");
         System.out.println("1. Buat Pesanan");
         System.out.println("2. Cetak Bill");
@@ -345,7 +345,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
             valid = false;
             Restaurant resto = tempOrder.getRestaurant();
 
-            System.out.println("\nOpsi Pembayaran:");
+            System.out.println("\n\n\nPembayaran:");
             System.out.println("1. Credit Card");
             System.out.println("2. Debit");
             System.out.print("Pilihan Metode Pembayaran: ");
@@ -357,7 +357,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
                 user.setSaldo(user.getSaldo()-biayaResult);
                 resto.setSaldo(resto.getSaldo()+totalPembayaran);
                 tempOrder.setOrderFinished(true);
-                System.out.println("Berhasil Membayar Bill sebesar Rp " + sumHarga + " dengan biaya transaksi sebesar Rp " + charge);
+                System.out.print("Berhasil Membayar Bill sebesar Rp " + sumHarga + " dengan biaya transaksi sebesar Rp " + charge);
             }
             else if (((user.getPayment() instanceof CreditCardPayment) && (metodePembayaran == 2)) || 
                 ((user.getPayment() instanceof DebitPayment) && (metodePembayaran == 1))) {System.out.println("User belum memiliki metode pembayaran ini!");
