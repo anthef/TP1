@@ -1,4 +1,4 @@
-package assignments.assignment2; //Import package
+package assignments.assignment2;
 
 import java.util.ArrayList; //Import Library
 import java.util.Scanner;

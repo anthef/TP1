@@ -1,5 +1,6 @@
 package assignments.assignment2;
 //Class menu
+
 public class Menu {
     private String namaMakanan; 
     private double harga;
