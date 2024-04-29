@@ -8,9 +8,10 @@ import assignments.assignment3.payment.*;
 import assignments.assignment3.MainMenu;
 
 public class AdminSystemCLI extends UserSystemCLI{
-
+    private static final Scanner input = new Scanner(System.in);
+    private ArrayList<Restaurant> restoList = MainMenu.getRestoList();
     @Override
-    boolean handleMenu(int command){
+    protected boolean handleMenu(int command){
         switch(command){
             case 1 -> handleTambahRestoran();
             case 2 -> handleHapusRestoran();
@@ -21,7 +22,7 @@ public class AdminSystemCLI extends UserSystemCLI{
     }
 
     @Override
-    void displayMenu() {
+    protected void displayMenu() {
         System.out.println("\n--------------------------------------------");
         System.out.println("Pilih menu:");
         System.out.println("1. Tambah Restoran");
@@ -32,87 +33,106 @@ public class AdminSystemCLI extends UserSystemCLI{
     }
 
     protected void handleTambahRestoran(){
-        System.out.println("--------------Tambah Restoran---------------");
-        Restaurant restaurant = null;
-        while (restaurant == null) {
-            String namaRestaurant = getValidRestaurantName();
-            restaurant = new Restaurant(namaRestaurant);
-            restaurant = handleTambahMenuRestaurant(restaurant);
-        }
-        MainMenu.setRestoList(restaurant);
-        System.out.print("Restaurant "+restaurant.getNama()+" Berhasil terdaftar." );
-    }
-    public static Restaurant handleTambahMenuRestaurant(Restaurant restoran){
-        System.out.print("Jumlah Makanan: ");
-        int  jumlahMenu = Integer.parseInt(input.nextLine().trim());
-        boolean isMenuValid = true;
-        for(int i = 0; i < jumlahMenu; i++){
-            String inputValue = input.nextLine().trim();
-            String[] splitter = inputValue.split(" ");
-            String hargaStr = splitter[splitter.length-1];
-            boolean isDigit = checkIsDigit(hargaStr);
-            String namaMenu = String.join(" ", Arrays.copyOfRange(splitter, 0, splitter.length - 1));
-            if(isDigit){
-                int hargaMenu = Integer.parseInt(hargaStr);
-                restoran.addMenu(new Menu(namaMenu, hargaMenu));
-            }
-            else{
-                isMenuValid = false;
-            }
-        }
-        if(!isMenuValid){
-            System.out.println("Harga menu harus bilangan bulat!");
-            System.out.println();
-        }
+        System.out.println("----------------Tambah Restoran----------------");
+        boolean isValid = true;
+        while(isValid){
+            boolean vld = true;
+            boolean vld2 = true;
+            System.out.printf("Nama: ");
+            String nama = input.nextLine();
 
-        return isMenuValid? restoran : null; 
-    }
-
-    public static boolean checkIsDigit(String digits){
-        return  digits.chars().allMatch(Character::isDigit);
-    }
-    
-    public static String getValidRestaurantName() {
-        String name = "";
-        boolean isRestaurantNameValid = false;
-    
-        while (!isRestaurantNameValid) {
-            System.out.print("Nama: ");
-            String inputName = input.nextLine().trim();
-            boolean isRestaurantExist = restoList.stream()
-                    .anyMatch(restoran -> restoran.getNama().toLowerCase().equals(inputName.toLowerCase()));
-            boolean isRestaurantNameLengthValid = inputName.length() >= 4;
-    
-            if (isRestaurantExist) {
-                System.out.printf("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!%n", inputName);
-                System.out.println();
-            } else if (!isRestaurantNameLengthValid) {
-                System.out.println("Nama Restoran tidak valid! Minimal 4 karakter diperlukan.");
-                System.out.println();
-            } else {
-                name = inputName;
-                isRestaurantNameValid = true;
+            //Validasi input untuk nama restoran
+            if (nama.length() < 4) {
+                System.out.println("Nama Restoran tidak valid!\n");
+                continue;
             }
+            if(restoList != null)
+            {
+                for (Restaurant resto : restoList) {
+                    if(resto==null){
+                        break;
+                    }
+                    if (resto.getNama().equals(nama)) {
+                        System.out.printf("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!\n\n", nama);
+                        vld = false;
+                        break;
+                    }
+                }
+            }
+            if(!vld){
+                continue;
+            }
+
+            System.out.printf("Jumlah Makanan: ");
+            int jumlahMakanan = input.nextInt();
+            input.nextLine(); 
+
+            String[] makananArray = new String[jumlahMakanan];
+
+            for (int i = 0; i < jumlahMakanan; i++) {
+                String makananHarga = input.nextLine();
+                makananArray[i] = makananHarga;
+            }
+
+            for (String makanan : makananArray) {
+                String[] mknSplit = makanan.split(" ");
+                try {
+                    double harga = Double.parseDouble(mknSplit[mknSplit.length - 1]);
+                } catch (NumberFormatException e) {
+                    System.out.println("Harga menu harus bilangan bulat!\n"); //Melakukan validasi bahwa harga menu makanan harus bilangan bulat
+                    vld = false;
+                    break;
+                }
+            }
+            if(!vld){
+                continue;
+            }
+
+            Restaurant newRestaurant = new Restaurant(nama);
+            //Membuat object menu
+            for (String makanan : makananArray) {
+                String[] mknSplits = makanan.split(" ");
+                StringBuilder namaMakananBuilder = new StringBuilder();
+                for (int i = 0; i < mknSplits.length - 1; i++) {
+                    namaMakananBuilder.append(mknSplits[i]).append(" ");
+                }
+                String namaMakanan = namaMakananBuilder.toString().trim();
+                double harga = Double.parseDouble(mknSplits[mknSplits.length - 1]);
+                Menu menu = new Menu(namaMakanan, harga); 
+                newRestaurant.addMenu(menu);
+            }
+            MainMenu.setRestoList(newRestaurant);
+            System.out.printf("Restaurant %s Berhasil terdaftar.", nama);
+            isValid = false;
         }
-        return name;
     }
 
     protected void handleHapusRestoran(){
-        System.out.println("--------------Hapus Restoran----------------");
-        boolean isActionDeleteEnded = false;
-        while (!isActionDeleteEnded) {
-            System.out.print("Nama Restoran: ");
-            String restaurantName = input.nextLine().trim();
-            boolean isRestaurantExist = restoList.stream().anyMatch(restaurant -> restaurant.getNama().toLowerCase().equals(restaurantName.toLowerCase()));
-            if(!isRestaurantExist){
-                System.out.println("Restoran tidak terdaftar pada sistem.");
-                System.out.println();
+        System.out.println("----------------Hapus Restoran----------------");
+        boolean valid = true;
+        while(valid){
+            boolean isValid = false;
+            System.out.printf("Nama Restoran: ");
+            String nama = input.nextLine();
+            for(Restaurant resto : restoList){
+                if((resto.getNama().toLowerCase()).equals(nama.toLowerCase())){
+                    restoList.remove(resto);
+                    System.out.print("Restoran berhasil dihapus");
+                    isValid = true;
+                    break;
+                }
+                else{
+                    isValid = false;
+                }
             }
-            else{
-                restoList = new ArrayList<>(restoList.stream().filter(restaurant-> !restaurant.getNama().toLowerCase().equals(restaurantName.toLowerCase())).toList());
-                System.out.println("Restoran berhasil dihapus");
-                isActionDeleteEnded = true;
+            if(!isValid){
+                System.out.println("Restoran tidak terdaftar pada sistem\n");
+                continue;
+            }
+            if(isValid){
+                valid=false;
             }
         }
     }
+    
 }

@@ -4,22 +4,15 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
     final private double TRANSACTIONFEEPERCENTAGE = 0.02;
     private double transactionFee;
 
-    public double getTransactionFee(){
-        return transactionFee;
-    }
-
-    public void setTransactionFee(double transactionFee){
-        this.transactionFee = transactionFee;
-    }
-
     public long countTransactionFee(long amount){
-        long transactionFee = (long) TRANSACTIONFEEPERCENTAGE * amount;
-        return transactionFee;
+        double transactionFee = TRANSACTIONFEEPERCENTAGE * amount;
+        long tf = (long) transactionFee;
+        return tf;
     }
 
     @Override
     public long processPayment(long amount){
-        return countTransactionFee(amount) * amount;
+        return countTransactionFee(amount) + amount;
     }
 
 }

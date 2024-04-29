@@ -67,8 +67,30 @@ public class User {
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
     }
+
+    public int getOngkir(String lokasi){
+        int biayaOngkosKirim = 0;
+        switch(lokasi){
+            case "P" :
+                biayaOngkosKirim = 10000;
+                break;
+            case "U" :
+                biayaOngkosKirim = 20000;
+                break;
+            case "T" :
+                biayaOngkosKirim = 35000;
+                break;
+            case "S" :
+                biayaOngkosKirim = 40000;
+                break;
+            case "B" :
+                biayaOngkosKirim = 60000;
+                break;
+        }
+        return biayaOngkosKirim;
+    }
+
 
 }

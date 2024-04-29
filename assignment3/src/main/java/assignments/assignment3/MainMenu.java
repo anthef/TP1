@@ -3,27 +3,29 @@ package assignments.assignment3;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import assignments.assignment2.Restaurant;
-import assignments.assignment2.User;
+import assignments.assignment3.payment.*;
 import assignments.assignment3.LoginManager;
-import assignments.assignment3.payment.CreditCardPayment;
-import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
 import assignments.assignment3.systemCLI.CustomerSystemCLI;
+import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class MainMenu {
     private final Scanner input;
     private final LoginManager loginManager;
-    private static ArrayList<Restaurant> restoList;
+    private static ArrayList<Restaurant> restoList = new ArrayList<>();
     private static ArrayList<User> userList;
+    private static User userLoggedIn;
 
+    
     public MainMenu(Scanner in, LoginManager loginManager) {
         this.input = in;
         this.loginManager = loginManager;
     }
 
+
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
+        initUser();
         mainMenu.run();
     }
 
@@ -40,7 +42,7 @@ public class MainMenu {
                 default -> System.out.println("Pilihan tidak valid, silakan coba lagi.");
             }
         }
-
+        System.out.println("Terima kasih telah menggunakan DepeFood!");
         input.close();
     }
 
@@ -52,20 +54,26 @@ public class MainMenu {
         String noTelp = input.nextLine();
 
         User userLoggedIn; 
-        userLoggedIn = getUser(nama, noTelp);
-        if(userLoggedIn!=null){
+        MainMenu.userLoggedIn = getUser(nama, noTelp);
+        if(MainMenu.userLoggedIn!=null){
             System.out.printf("Selamat datang %s!", nama);
         }
         else{
             System.out.println("Pengguna dengan data tersebut tidak dapat ditemukan!");
-            continue;
+            login();
         }
 
-        boolean isLoggedIn = true;
-
-        loginManager.getSystem(userLoggedIn.role);
+        UserSystemCLI user = loginManager.getSystem(MainMenu.userLoggedIn.role);
+        if((MainMenu.userLoggedIn.role).equals("Customer")){
+            CustomerSystemCLI users = (CustomerSystemCLI) user;
+            users.run();
+        }
+        else if((MainMenu.userLoggedIn.role).equals("Admin")){
+            AdminSystemCLI users = (AdminSystemCLI) user;
+            users.run();
+        }
+        
     }
-
     private static void printHeader(){
         System.out.println("\n>>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
@@ -100,11 +108,11 @@ public class MainMenu {
         userList.add(new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
     }
     
-    public static User getUser(String nama, String nomorTelepon){ //Method untuk validasi apabila nama dan nomor telepon sesuai
+    public static User getUser(String nama, String noTelp){ //Method untuk validasi apabila nama dan nomor telepon sesuai
         User ret = null;
         if(userList != null){
             for(User usr : userList){
-                if(usr.getNama().equals(nama) & usr.getNomorTelepon().equals(nomorTelepon)){
+                if(usr.getNama().equals(nama) & usr.getNomorTelepon().equals(noTelp)){
                     ret = usr;
                     break;
                 }
@@ -124,7 +132,7 @@ public class MainMenu {
         return userList;
     }
 
-    public static void setRestoList(User user){
-        userList.add(user);
+    public static User setUser(){
+        return userLoggedIn;
     }
 }
