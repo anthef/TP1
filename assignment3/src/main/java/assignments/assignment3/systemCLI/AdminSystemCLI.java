@@ -1,17 +1,15 @@
-package assignments.assignment3.systemCLI;
-import java.util.ArrayList;
-import java.util.Arrays;
+package assignments.assignment3.systemCLI; //Import package
+import java.util.ArrayList; //Import library 
 import java.util.Scanner;
 
-import assignments.assignment3.MainMenu;
+import assignments.assignment3.MainMenu; //Import class
 import assignments.assignment3.payment.*;
-import assignments.assignment3.MainMenu;
 
 public class AdminSystemCLI extends UserSystemCLI{
-    private static final Scanner input = new Scanner(System.in);
+    private static final Scanner input = new Scanner(System.in); 
     private ArrayList<Restaurant> restoList = MainMenu.getRestoList();
     @Override
-    protected boolean handleMenu(int command){
+    protected boolean handleMenu(int command){ //Override handle menu
         switch(command){
             case 1 -> handleTambahRestoran();
             case 2 -> handleHapusRestoran();
@@ -22,7 +20,7 @@ public class AdminSystemCLI extends UserSystemCLI{
     }
 
     @Override
-    protected void displayMenu() {
+    protected void displayMenu() { //override display menu
         System.out.println("\n--------------------------------------------");
         System.out.println("Pilih menu:");
         System.out.println("1. Tambah Restoran");
@@ -32,7 +30,7 @@ public class AdminSystemCLI extends UserSystemCLI{
         System.out.print("Pilihan menu: ");
     }
 
-    protected void handleTambahRestoran(){
+    protected void handleTambahRestoran(){ //Class untuk menambahkan restoraan
         System.out.println("----------------Tambah Restoran----------------");
         boolean isValid = true;
         while(isValid){
@@ -107,7 +105,7 @@ public class AdminSystemCLI extends UserSystemCLI{
         }
     }
 
-    protected void handleHapusRestoran(){
+    protected void handleHapusRestoran(){ //Class untuk menghapus restoran
         System.out.println("----------------Hapus Restoran----------------");
         boolean valid = true;
         while(valid){

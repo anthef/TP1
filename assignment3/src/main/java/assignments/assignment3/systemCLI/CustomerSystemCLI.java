@@ -1,12 +1,8 @@
-package assignments.assignment3.systemCLI;
+package assignments.assignment3.systemCLI; //import package
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.time.LocalDate;
+import java.time.LocalDate; //Import Library
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 import assignments.assignment3.payment.*;
@@ -18,7 +14,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
     private ArrayList<Restaurant> restoList = MainMenu.getRestoList();
     
     @Override
-    protected boolean handleMenu(int choice){
+    protected boolean handleMenu(int choice){ //Override handle menu
         switch(choice){
             case 1 -> handleBuatPesanan();
             case 2 -> handleCetakBill();
@@ -34,7 +30,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
     }
 
     @Override
-    protected void displayMenu() {
+    protected void displayMenu() { //Override display menu
         System.out.println("\n--------------------------------------------");
         System.out.println("Pilih menu:");
         System.out.println("1. Buat Pesanan");
@@ -47,7 +43,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
         System.out.print("Pilihan menu: ");
     }
     
-    void handleBuatPesanan(){
+    void handleBuatPesanan(){ //Method untuk membuat pesanan bagi customer
         User user = MainMenu.setUser();
         System.out.println("----------------Buat Pesanan----------------");
         boolean valid = true;
@@ -194,7 +190,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
 
 
 
-    void handleCetakBill(){
+    void handleCetakBill(){ //Method untuk mencetak bill bagi customer
         User user = MainMenu.setUser();
         System.out.println("----------------Cetak Bill----------------");
         boolean valid = true;
@@ -242,7 +238,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
         }
     }
 
-    void handleLihatMenu(){
+    void handleLihatMenu(){ //Method untuk sorting menu
         User user = MainMenu.setUser();
         System.out.println("----------------Lihat Menu----------------");
         boolean valid = true;
@@ -296,7 +292,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
         }
     }
 
-    void handleBayarBill(){
+    void handleBayarBill(){ //Method untuk bayar bill bagi customer
         User user = MainMenu.setUser();
         System.out.println("----------------Bayar Bill----------------");
         boolean valid = true;
@@ -388,7 +384,7 @@ public class CustomerSystemCLI extends UserSystemCLI  {
         }
     }
 
-    void handleCekSaldo(){
+    void handleCekSaldo(){ //Method untuk cek saldo user
         User user = MainMenu.setUser();
         System.out.println("Sisa saldo sebesar Rp " + user.getSaldo());
     }

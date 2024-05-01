@@ -75,7 +75,7 @@ public class MainMenu {
         }
         
     }
-    private static void printHeader(){
+    private static void printHeader(){ //print header
         System.out.println("\n>>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
         System.out.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
@@ -85,7 +85,7 @@ public class MainMenu {
         System.out.println(">>=======================================<<");
     }
 
-    private static void startMenu(){
+    private static void startMenu(){ //print header
         System.out.println("Selamat datang di DepeFood!");
         System.out.println("--------------------------------------------");
         System.out.println("Pilih menu:");
@@ -96,7 +96,7 @@ public class MainMenu {
     }
 
 
-    public static void initUser(){
+    public static void initUser(){ //init user
         userList = new ArrayList<User>();
 
         userList.add(new User("Thomas N", "9928765403", "thomas.n@gmail.com", "P", "Customer", new DebitPayment(), 500000));
@@ -122,18 +122,18 @@ public class MainMenu {
         return ret;
     }
 
-    public static ArrayList<Restaurant> getRestoList(){
+    public static ArrayList<Restaurant> getRestoList(){ //getter untuk resto list
         return restoList;
     }
-    public static void setRestoList(Restaurant resto){
+    public static void setRestoList(Restaurant resto){ //setter untuk resto list
         restoList.add(resto);
     }
 
-    public static ArrayList<User> getUserList(){
+    public static ArrayList<User> getUserList(){ //getter user list
         return userList;
     }
 
-    public static User setUser(){
+    public static User setUser(){ //setter user list
         return userLoggedIn;
     }
 }

@@ -72,7 +72,7 @@ public class User {
         return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
     }
 
-    //Get ongkir method
+    //Get ongkir
     public int getOngkir(String lokasi){
         int biayaOngkosKirim = 0;
         switch(lokasi){

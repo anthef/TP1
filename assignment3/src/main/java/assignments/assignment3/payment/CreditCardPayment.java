@@ -3,7 +3,6 @@ package assignments.assignment3.payment; //package
 public class CreditCardPayment implements DepeFoodPaymentSystem {
     //Datafield
     final private double TRANSACTIONFEEPERCENTAGE = 0.02; 
-    private double transactionFee;
 
     public long countTransactionFee(long amount){ //Count transaction fee method
         double transactionFee = TRANSACTIONFEEPERCENTAGE * amount;
