@@ -239,7 +239,6 @@ public class CustomerSystemCLI extends UserSystemCLI  {
     }
 
     void handleLihatMenu(){ //Method untuk sorting menu
-        User user = MainMenu.setUser();
         System.out.println("----------------Lihat Menu----------------");
         boolean valid = true;
         while(valid){
@@ -345,33 +344,33 @@ public class CustomerSystemCLI extends UserSystemCLI  {
             System.out.println("2. Debit");
             System.out.print("Pilihan Metode Pembayaran: ");
             int metodePembayaran = input.nextInt();
-            if(user.getPayment() instanceof CreditCardPayment && (metodePembayaran==1)){
+            if(user.getPaymentSystem() instanceof CreditCardPayment && (metodePembayaran==1)){
                 if(tempOrder.getOrderFinished()){
                     System.out.println("Pesanan dengan ID ini sudah lunas!");
                 }
                 else{
-                CreditCardPayment payment = (CreditCardPayment) user.getPayment();
+                CreditCardPayment payment = (CreditCardPayment) user.getPaymentSystem();
                 long charge = payment.countTransactionFee(totalPembayaran);
-                long biayaResult = payment.processPayment(totalPembayaran);
+                long biayaResult = payment.processPayment(user.getSaldo(),totalPembayaran);
                 user.setSaldo(user.getSaldo()-biayaResult);
                 resto.setSaldo(resto.getSaldo()+totalPembayaran);
                 tempOrder.setOrderFinished(true);
                 System.out.print("Berhasil Membayar Bill sebesar Rp " + sumHarga + " dengan biaya transaksi sebesar Rp " + charge);
                 }
             }
-            else if (((user.getPayment() instanceof CreditCardPayment) && (metodePembayaran == 2)) || 
-                ((user.getPayment() instanceof DebitPayment) && (metodePembayaran == 1))) {System.out.println("User belum memiliki metode pembayaran ini!");
+            else if (((user.getPaymentSystem() instanceof CreditCardPayment) && (metodePembayaran == 2)) || 
+                ((user.getPaymentSystem() instanceof DebitPayment) && (metodePembayaran == 1))) {System.out.println("User belum memiliki metode pembayaran ini!");
             }
 
-            else if(user.getPayment() instanceof DebitPayment && (metodePembayaran==2)){
-                DebitPayment payment = (DebitPayment) user.getPayment();
-                long biayaResult = payment.processPayment(totalPembayaran);
+            else if(user.getPaymentSystem() instanceof DebitPayment && (metodePembayaran==2)){
+                DebitPayment payment = (DebitPayment) user.getPaymentSystem();
+                long biayaResult = payment.processPayment(user.getSaldo(),totalPembayaran);
                 if(tempOrder.getOrderFinished()){
                     System.out.println("Pesanan dengan ID ini sudah lunas!");
                 }
                 else{
                     if(user.getSaldo()>=biayaResult){
-                        payment.processPayment(totalPembayaran);
+                        payment.processPayment(user.getSaldo(),totalPembayaran);
                         user.setSaldo(user.getSaldo()-biayaResult);
                         resto.setSaldo(resto.getSaldo()+totalPembayaran);
                         tempOrder.setOrderFinished(true);

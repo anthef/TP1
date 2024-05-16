@@ -8,6 +8,7 @@ import assignments.assignment3.LoginManager;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
 import assignments.assignment3.systemCLI.CustomerSystemCLI;
 import assignments.assignment3.systemCLI.UserSystemCLI;
+import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class MainMenu {
     //Datafield
@@ -30,7 +31,7 @@ public class MainMenu {
         mainMenu.run();
     }
 
-    public void run(){
+    public void run() {
         printHeader();
         boolean exit = false;
         while (!exit) {
@@ -47,7 +48,8 @@ public class MainMenu {
         input.close();
     }
 
-    private void login(){
+    private void login() {
+        UserSystemCLI system;
         System.out.println("\nSilakan Login:");
         System.out.print("Nama: ");
         String nama = input.nextLine();
@@ -64,12 +66,12 @@ public class MainMenu {
         }
 
         //Assign customer system and admin system
-        UserSystemCLI user = loginManager.getSystem(MainMenu.userLoggedIn.role);
-        if((MainMenu.userLoggedIn.role).equals("Customer")){
+        UserSystemCLI user = loginManager.getSystem(MainMenu.userLoggedIn.getRole());
+        if((MainMenu.userLoggedIn.getRole()).equals("Customer")){
             CustomerSystemCLI users = (CustomerSystemCLI) user;
             users.run();
         }
-        else if((MainMenu.userLoggedIn.role).equals("Admin")){
+        else if((MainMenu.userLoggedIn.getRole()).equals("Admin")){
             AdminSystemCLI users = (AdminSystemCLI) user;
             users.run();
         }
@@ -106,7 +108,8 @@ public class MainMenu {
         userList.add(new User("Aurora Anum", "087788129043", "a.anum@gmail.com", "U", "Customer", new DebitPayment(), 650000));
 
         userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
-        userList.add(new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
+        userList.add(
+                new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
     }
     
     public static User getUser(String nama, String noTelp){ //Method untuk validasi apabila nama dan nomor telepon sesuai

@@ -9,7 +9,7 @@ public class User {
     private String nomorTelepon;
     private String email;
     private ArrayList<Order> orderHistory;
-    public String role;
+    private String role;
     private DepeFoodPaymentSystem payment;
     private long saldo;
     private String lokasi;
@@ -38,6 +38,10 @@ public class User {
     public String getNomorTelepon() {
         return nomorTelepon;
     }
+
+    public String getRole(){
+        return role;
+    }
     public void addOrderHistory(Order order){
         orderHistory.add(order);
     }
@@ -51,7 +55,7 @@ public class User {
         this.saldo = saldo;
     }
 
-    public DepeFoodPaymentSystem getPayment(){
+    public DepeFoodPaymentSystem getPaymentSystem(){
         return payment;
     }
 

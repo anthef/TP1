@@ -1,6 +1,11 @@
 package assignments.assignment2;
 import java.util.ArrayList;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Restaurant {
     //Atribut
     private String nama;

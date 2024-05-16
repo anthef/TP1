@@ -4,7 +4,7 @@ public class DebitPayment implements DepeFoodPaymentSystem {
     final private double MINIMUMTOTALPRICE = 50000; //Constant variable
 
     @Override
-    public long processPayment(long amount) { //Override process payment for amount validation
+    public long processPayment(long saldo,long amount) { //Override process payment for amount validation
         if (amount >= MINIMUMTOTALPRICE) {
             System.out.print("Berhasil Membayar Bill sebesar " + amount);
             return amount;

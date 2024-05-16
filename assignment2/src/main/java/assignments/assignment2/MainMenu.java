@@ -11,6 +11,8 @@ public class MainMenu { //class utama
     private static ArrayList<User> userList = new ArrayList<User>();
 
     public static void main(String[] args) {
+        restoList = new ArrayList<>();
+        initUser();
         boolean programRunning = true;
         initUser();
         printHeader();

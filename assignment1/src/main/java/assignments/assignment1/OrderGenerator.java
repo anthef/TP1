@@ -10,7 +10,7 @@ public class OrderGenerator {
     public static void showMenu(){  //function show menu
         System.out.println(">>=======================================<<");
         System.out.println("|| ___                 ___             _ ||");
-        System.out.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
+        System.err.println("||| . \\ ___  ___  ___ | __>___  ___  _| |||");
         System.out.println("||| | |/ ._>| . \\/ ._>| _>/ . \\/ . \\/ . |||");
         System.out.println("|||___/\\___.|  _/\\___.|_| \\___/\\___/\\___|||");
         System.out.println("||          |_|                          ||");
@@ -20,7 +20,7 @@ public class OrderGenerator {
 
     public static void repMenu(){
         System.out.println("Pilih menu:");
-        System.out.println("1. Generate Order ID");
+        System.err.println("1. Generate Order ID");
         System.out.println("2. Generate Bill");
         System.out.println("3. Keluar");
         System.out.println("--------------------------------------------");
@@ -103,7 +103,22 @@ public class OrderGenerator {
 
         return output;
     }
-
+    public static int calculateDeliveryCost(String location) {
+        switch (location) {
+            case "P":
+                return 10000;
+            case "U":
+                return 20000;
+            case "T":
+                return 35000;
+            case "S":
+                return 40000;
+            case "B":
+                return 60000;
+            default:
+                return 0;
+        }
+    }
     public static String generateBill(String OrderID, String lokasi){
         String lokasiPrint = lokasi.toUpperCase();
         String biayaOngkosKirim = "0"; 
@@ -142,6 +157,22 @@ public class OrderGenerator {
         return bill;
     }
 
+    public static boolean validateDate(String date) {
+        String[] parts = date.split("/");
+        if (parts.length != 3) {
+            return false;
+        }
+
+        for (String part : parts) {
+            if (!part.chars().allMatch(Character::isDigit)) {
+                return false;
+            }
+        }
+
+        return parts[0].length() == 2 && parts[1].length() == 2 && parts[2].length() == 4;
+    }
+
+    
     public static void main(String[] args) {
         Boolean exitMenu = true;
         showMenu();
