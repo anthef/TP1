@@ -5,7 +5,6 @@ import assignments.assignment3.payment.User;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -37,7 +36,6 @@ public class LoginForm {
     }
 
     private Scene createLoginForm() {
-        //TODO: Implementasi method untuk menampilkan komponen form login
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);

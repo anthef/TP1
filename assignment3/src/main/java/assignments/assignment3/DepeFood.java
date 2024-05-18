@@ -95,7 +95,7 @@ public class DepeFood {
             if (isRestaurantExist) {
                 return String.format("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!", inputName);
             } else if (!isRestaurantNameLengthValid) {
-                return "Nama Restoran tidak valid! Minimal 4 karakter diperlukan.";
+                return null;
             } else {
                 name = inputName;
                 isRestaurantNameValid = true;

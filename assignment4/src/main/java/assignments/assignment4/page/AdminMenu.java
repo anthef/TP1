@@ -212,7 +212,12 @@ public class AdminMenu extends MemberMenu {
     private void handleTambahRestoran(String nama) {
         String validName = DepeFood.getValidRestaurantName(nama);
         boolean valid = restoList.stream().noneMatch(r -> r.getNama().equals(validName));
-
+        boolean anotherValid = true;
+        if(validName==null){
+            anotherValid = false;
+            valid = false;
+            showAlert(Alert.AlertType.ERROR, "Error", "Wrong format!");
+        }
         if (valid) {
             Restaurant resto = new Restaurant(validName);
             restoList.add(resto);
@@ -222,9 +227,13 @@ public class AdminMenu extends MemberMenu {
                 }
             }
             restaurantComboBox.setItems(FXCollections.observableArrayList(restaurantNames)); // Update the ComboBox options
-            showAlert(Alert.AlertType.INFORMATION, "Message", "Restaurant successfully registered!");
+            if(anotherValid){
+                showAlert(Alert.AlertType.INFORMATION, "Message", "Restaurant successfully registered!");
+            }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Restaurant already exists!");
+            if(anotherValid){
+                showAlert(Alert.AlertType.ERROR, "Error", "Restaurant already exists!");
+            }
         }
     }
 
@@ -274,6 +283,31 @@ public class AdminMenu extends MemberMenu {
         return new Scene(layout, 400, 600);
     }
 
+        // Add this method to perform the sorting
+    private void sortMenuItems(ArrayList<Menu> daftarMenu) {
+        // Melakukan sorting menu dengan menggunakan bubble sort algorithm
+        for (int i = 0; i < daftarMenu.size() - 1; i++) {
+            for (int j = 0; j < daftarMenu.size() - i - 1; j++) {
+                if (daftarMenu.get(j).getHarga() > daftarMenu.get(j + 1).getHarga()) {
+                    Menu temp = daftarMenu.get(j);
+                    // Menu akan di swap supaya memiliki urutan yang benar
+                    daftarMenu.set(j, daftarMenu.get(j + 1));
+                    daftarMenu.set(j + 1, temp);
+                } 
+                // Kondisi apabila harganya sama
+                else if (daftarMenu.get(j).getHarga() == daftarMenu.get(j + 1).getHarga()) {
+                    if (daftarMenu.get(j).getNamaMakanan().compareTo(daftarMenu.get(j + 1).getNamaMakanan()) > 0) {
+                        Menu temp = daftarMenu.get(j);
+                        // Menu akan di swap supaya memiliki urutan yang benar
+                        daftarMenu.set(j, daftarMenu.get(j + 1));
+                        daftarMenu.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+    }
+
+    // Modify the updateMenuItemsListView method to include the sorting
     private void updateMenuItemsListView() {
         String selectedRestaurantName = restaurantComboBox.getSelectionModel().getSelectedItem();
         if (selectedRestaurantName == null) {
@@ -291,12 +325,19 @@ public class AdminMenu extends MemberMenu {
         }
 
         Restaurant restaurant = optionalRestaurant.get();
-        ArrayList<String> menuItems = new ArrayList<>();
-        for (Menu menu : restaurant.getMenu()) {
-            menuItems.add(menu.getNamaMakanan() + " - Rp " + menu.getHarga());
+        ArrayList<Menu> menuItems = new ArrayList<>(restaurant.getMenu());
+
+        // Sort the menu items
+        sortMenuItems(menuItems);
+
+        ArrayList<String> menuDisplayItems = new ArrayList<>();
+        for (Menu menu : menuItems) {
+            menuDisplayItems.add(menu.getNamaMakanan() + " - Rp " + menu.getHarga());
         }
-        menuItemsListView.setItems(FXCollections.observableArrayList(menuItems));
+        menuItemsListView.setItems(FXCollections.observableArrayList(menuDisplayItems));
     }
+
+
 
     private void handleTambahMenuRestoran(String itemName, String price) {
         String restaurantName = restaurantNameInput.getText().trim();
