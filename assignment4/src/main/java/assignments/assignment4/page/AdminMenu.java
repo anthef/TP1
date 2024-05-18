@@ -28,7 +28,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class AdminMenu extends MemberMenu {
-    private Stage stage;
+    private Stage stage; //Attribute
     private Scene scene;
     private User user;
     private Restaurant resto;
@@ -41,7 +41,7 @@ public class AdminMenu extends MemberMenu {
     private ComboBox<String> restaurantComboBox = new ComboBox<>();
     private ListView<String> menuItemsListView = new ListView<>();
 
-    public AdminMenu(Stage stage, MainApp mainApp, User user) {
+    public AdminMenu(Stage stage, MainApp mainApp, User user) { //Constructor
         this.stage = stage;
         this.mainApp = mainApp;
         this.user = user; // Store the user
@@ -52,7 +52,7 @@ public class AdminMenu extends MemberMenu {
     }
 
     @Override
-    public Scene createBaseMenu() {
+    public Scene createBaseMenu() { //Base menu
         VBox menuLayout = new VBox(10);
         menuLayout.setPadding(new Insets(10));
         menuLayout.setAlignment(Pos.CENTER);
@@ -63,7 +63,7 @@ public class AdminMenu extends MemberMenu {
                             "-fx-font-size: 14px;"; 
 
         DropShadow shadow = new DropShadow(10, Color.GREY);
-
+        //Button for admin
         Button tambahRestoranButton = new Button("Tambah Restoran");
         tambahRestoranButton.setStyle(buttonStyle);
         tambahRestoranButton.setEffect(shadow);
@@ -84,6 +84,7 @@ public class AdminMenu extends MemberMenu {
         logoutButton.setEffect(shadow);
         menuLayout.getChildren().add(logoutButton);
 
+        //Action on button
         tambahRestoranButton.setOnAction(e -> mainApp.setScene(createAddRestaurantForm()));
         tambahMenuButton.setOnAction(e -> mainApp.setScene(createAddMenuForm()));
         lihatDaftarRestoranButton.setOnAction(e -> mainApp.setScene(createViewRestaurantsForm()));
@@ -91,7 +92,7 @@ public class AdminMenu extends MemberMenu {
         return new Scene(menuLayout, 400, 600);
     }
 
-    private Scene createAddRestaurantForm() {
+    private Scene createAddRestaurantForm() { //Scene add restaurant
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
         layout.setAlignment(Pos.CENTER);
@@ -105,6 +106,7 @@ public class AdminMenu extends MemberMenu {
 
         DropShadow shadow = new DropShadow(10, Color.GREY);
 
+        //Label and text field for the feature
         Label restaurantNameLabel = new Label("Restaurant Name:");
         restaurantNameLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 14));
         restaurantNameLabel.setTextFill(Color.web("#333333"));
@@ -125,6 +127,7 @@ public class AdminMenu extends MemberMenu {
         kembaliButton.setEffect(shadow);
         layout.getChildren().add(kembaliButton);
 
+        //hover
         submitButton.setOnMouseEntered(e -> submitButton.setScaleX(1.1));
         submitButton.setOnMouseEntered(e -> submitButton.setScaleY(1.1));
         submitButton.setOnMouseExited(e -> submitButton.setScaleX(1.0));
@@ -135,6 +138,7 @@ public class AdminMenu extends MemberMenu {
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleX(1.0));
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleY(1.0));
 
+        //Action on button
         submitButton.setOnAction(e -> handleTambahRestoran(restoNameInput.getText()));
         kembaliButton.setOnAction(e -> mainApp.setScene(createBaseMenu()));
         return new Scene(layout, 400, 600);
@@ -154,6 +158,7 @@ public class AdminMenu extends MemberMenu {
 
         DropShadow shadow = new DropShadow(10, Color.GREY);
 
+        //Label and text field for add menu
         Label restoNameLabel = new Label("Restaurant Name:");
         restoNameLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 14));
         restoNameLabel.setTextFill(Color.web("#333333"));
@@ -204,12 +209,14 @@ public class AdminMenu extends MemberMenu {
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleX(1.0));
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleY(1.0));
 
+        //Action on button
         addMenuButton.setOnAction(e -> handleTambahMenuRestoran(menuItemInput.getText(), hargaItemInput.getText()));
         kembaliButton.setOnAction(e -> mainApp.setScene(createBaseMenu()));
         return new Scene(layout, 400, 600);
     }
 
     private void handleTambahRestoran(String nama) {
+        //validation for tambah restoran
         String validName = DepeFood.getValidRestaurantName(nama);
         boolean valid = restoList.stream().noneMatch(r -> r.getNama().equals(validName));
         boolean anotherValid = true;
@@ -237,7 +244,7 @@ public class AdminMenu extends MemberMenu {
         }
     }
 
-    private Scene createViewRestaurantsForm() {
+    private Scene createViewRestaurantsForm() { //Scene for view restoran
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10));
         layout.setAlignment(Pos.CENTER);
@@ -273,17 +280,18 @@ public class AdminMenu extends MemberMenu {
         kembaliButton.setEffect(shadow);
         layout.getChildren().add(kembaliButton);
 
+        //hover
         kembaliButton.setOnMouseEntered(e -> kembaliButton.setScaleX(1.1));
         kembaliButton.setOnMouseEntered(e -> kembaliButton.setScaleY(1.1));
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleX(1.0));
         kembaliButton.setOnMouseExited(e -> kembaliButton.setScaleY(1.0));
 
+        //Action on button
         kembaliButton.setOnAction(e -> mainApp.setScene(createBaseMenu()));
 
         return new Scene(layout, 400, 600);
     }
 
-        // Add this method to perform the sorting
     private void sortMenuItems(ArrayList<Menu> daftarMenu) {
         // Melakukan sorting menu dengan menggunakan bubble sort algorithm
         for (int i = 0; i < daftarMenu.size() - 1; i++) {
@@ -307,8 +315,7 @@ public class AdminMenu extends MemberMenu {
         }
     }
 
-    // Modify the updateMenuItemsListView method to include the sorting
-    private void updateMenuItemsListView() {
+    private void updateMenuItemsListView() { //Update the list of menu for list of view
         String selectedRestaurantName = restaurantComboBox.getSelectionModel().getSelectedItem();
         if (selectedRestaurantName == null) {
             menuItemsListView.getItems().clear();
@@ -340,6 +347,7 @@ public class AdminMenu extends MemberMenu {
 
 
     private void handleTambahMenuRestoran(String itemName, String price) {
+        //Validation for tambah menu
         String restaurantName = restaurantNameInput.getText().trim();
         Optional<Restaurant> optionalRestaurant = restoList.stream()
             .filter(r -> r.getNama().equalsIgnoreCase(restaurantName))

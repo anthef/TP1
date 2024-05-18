@@ -1,6 +1,6 @@
-package assignments.assignment4.components.form;
+package assignments.assignment4.components.form; //package
 
-import assignments.assignment3.DepeFood;
+import assignments.assignment3.DepeFood; //import section
 import assignments.assignment3.payment.User;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -36,62 +36,62 @@ public class LoginForm {
     }
 
     private Scene createLoginForm() {
-        GridPane grid = new GridPane();
+        GridPane grid = new GridPane(); //Using grid pane
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 20, 20, 20));
         grid.setStyle("-fx-background-color: #F0F4F7;");
 
-        Label welcome = new Label("Welcome to DepeFood");
+        Label welcome = new Label("Welcome to DepeFood"); //First label
         welcome.setFont(Font.font("Lato", FontWeight.BOLD, 24));
         welcome.setTextFill(Color.web("#0076a3"));
         GridPane.setHalignment(welcome, HPos.CENTER);
         grid.add(welcome, 0, 0, 2, 1);
 
-        Label nameLabel = new Label("Name:");
+        Label nameLabel = new Label("Name:"); //Name Label
         nameLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 14));
         nameLabel.setTextFill(Color.web("#333333"));
         grid.add(nameLabel, 0, 1);
 
-        nameInput = new TextField();
+        nameInput = new TextField(); //Text field name
         nameInput.setPromptText("Enter your name");
         nameInput.setStyle("-fx-background-radius: 15; -fx-padding: 10;");
         GridPane.setHgrow(nameInput, Priority.ALWAYS);
         grid.add(nameInput, 1, 1);
 
-        Label telpLabel = new Label("Phone Number:");
+        Label telpLabel = new Label("Phone Number:"); //phone label
         telpLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 14));
         telpLabel.setTextFill(Color.web("#333333"));
         grid.add(telpLabel, 0, 2);
 
-        phoneInput = new TextField();
+        phoneInput = new TextField(); //text field phone
         phoneInput.setPromptText("Enter your phone number");
         phoneInput.setStyle("-fx-background-radius: 15; -fx-padding: 10;");
         GridPane.setHgrow(phoneInput, Priority.ALWAYS);
         grid.add(phoneInput, 1, 2);
 
-        Button login = new Button("Login");
+        Button login = new Button("Login"); //login button
         login.setStyle("-fx-background-color: linear-gradient(#4facfe, #00f2fe); -fx-text-fill: white; -fx-background-radius: 15;");
         login.setEffect(new DropShadow(10, Color.GREY));
         GridPane.setHalignment(login, HPos.RIGHT);
         grid.add(login, 1, 3);
         grid.setAlignment(Pos.CENTER);
 
-        login.setOnAction(e -> handleLogin());
+        login.setOnAction(e -> handleLogin()); //action on button
 
         return new Scene(grid, 400, 600);
     }
 
 
     private void handleLogin() {
-        User userFound = DepeFood.getUser(nameInput.getText(),phoneInput.getText());
-        if (userFound==null) {
+        User userFound = DepeFood.getUser(nameInput.getText(),phoneInput.getText()); //Find the user
+        if (userFound==null) { //null validation
             Alert alertError = new Alert(AlertType.ERROR);
             alertError.setTitle("Login Failed");
             alertError.setContentText("User not found!");
             alertError.showAndWait();
         } else {
-            String role = userFound.getRole();
+            String role = userFound.getRole(); //Set the scene for admin and customer
             Scene userScene = mainApp.getScene(userFound.getNama());
             if(role.equals("Admin")){
                 if(userScene==null){

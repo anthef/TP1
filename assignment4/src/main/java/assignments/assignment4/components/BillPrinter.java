@@ -29,7 +29,7 @@ public class BillPrinter {
     private MainApp mainApp;
     private User user;
 
-    public BillPrinter(Stage stage, MainApp mainApp, User user) {
+    public BillPrinter(Stage stage, MainApp mainApp, User user) { //constructor
         this.stage = stage;
         this.mainApp = mainApp;
         this.user = user;
@@ -47,6 +47,7 @@ public class BillPrinter {
 
         DropShadow shadow = new DropShadow(10, Color.GREY);
 
+        //PRINT THE OUTPUT
         Label billLabel = new Label("Bill");
         billLabel.setFont(Font.font("Verdana", FontWeight.NORMAL, FontPosture.REGULAR, 11));
         billLabel.setTextFill(Color.web("#333333"));
@@ -117,7 +118,7 @@ public class BillPrinter {
         return new Scene(layout, 400, 400);
     }
 
-    private Order printBill(String orderId) {
+    private Order printBill(String orderId) { //Validation for order id
         Order odr = null;
         for(Order order : user.getOrderHistory()){
             if(order.getOrderId().equals(orderId)){
@@ -128,7 +129,7 @@ public class BillPrinter {
         return odr;
     }
 
-    public Scene getScene(String order, Scene scene) {
+    public Scene getScene(String order, Scene scene) { //Set the scene
         Order orderObj = printBill(order);
         if(orderObj==null){
             Alert alertError = new Alert(AlertType.ERROR);
